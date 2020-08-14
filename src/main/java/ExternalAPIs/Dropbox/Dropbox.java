@@ -81,7 +81,7 @@ public class Dropbox {
             Guild guild = Main.getJda().getGuildById(server.getGuildId());
             if (guild == null)
                 return;
-            String filename = guild.getId() + ".json";
+            String filename = server.getGuildId() + ".json";
             FileWriter fileWriter = new FileWriter(filename, false);
             fileWriter.write(new Gson().toJson(server));
             fileWriter.close();
