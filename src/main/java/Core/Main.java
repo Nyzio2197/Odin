@@ -27,19 +27,12 @@ public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         serverList = new ArrayList<>();
-        Thread dbxThread = new Thread(Dropbox::bootUp);
-        dbxThread.start();
-        while (Dropbox.isSyncing)
-            Thread.sleep(1000);
+        Dropbox.bootUp();
         Twitter.bootUp();
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("testing, do not call commands"));
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
         jda = builder.build().awaitReady();
-        System.out.println("Attaching Listeners");
-        jda.addEventListener(new MemberEventListener(),
-                new ModeratorEventListener(),
-                new DeveloperMessageEventListener());
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
             public void run() {
@@ -109,6 +102,12 @@ public class Main {
         };
         Timer maintTimer = new Timer();
         maintTimer.schedule(maintenanceReminderTask, 0, 1000);
+
+        Thread.sleep(15 * 1000);
+        System.out.println("Attaching Listeners");
+        jda.addEventListener(new MemberEventListener(),
+                new ModeratorEventListener(),
+                new DeveloperMessageEventListener());
     }
 
     public static ArrayList<Server> getServerList() {
