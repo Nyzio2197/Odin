@@ -1,5 +1,7 @@
 package Core.MessageEventListeners;
 
+import Core.Main;
+import Server.Server;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
@@ -18,15 +20,32 @@ public class MemberEventListener extends OdinMessageEventListener {
             return;
         if (user.isBot() || user.isFake())
             return;
-        if (command == null)
-            return;
         if (messageReceivedEvent == null)
             return;
         if (!textChannel.getType().equals(ChannelType.TEXT))
             return;
+        if (mentionedUsers.size() == 1 && mentionedUsers.get(0).equals(Main.getJda().getSelfUser())) {
+            if (toggleHashMap.get(Server.PING) && !isModerator(member)) {
+                String[] possibleReplies = new String[]{"I am not even disappointed, I simply wonder how someone as lousy as you became a commander in the first place.",
+                        "You lot already have no avenues to escape!",
+                        "Flee while you still can.",
+                        "You have missions. Leaving them unfinished would be a foolish choice.",
+                        "As time passes, you learn how futile your concerns are.",
+                        "Do not waste my time \"Commander\".",
+                        "I do not talk to insignificant people.",
+                        "I don't even know who you are.",
+                        "Are you sure you're a fully licensed commander?",
+                        "https://cdn.discordapp.com/emojis/730498676190871675.png?v=1"};
+                String pingReplyMessage = user.getAsMention() + " " + possibleReplies[(int) (Math.random() * possibleReplies.length)];
+                textChannel.sendMessage(pingReplyMessage).queue();
+                return;
+            }
+        }
+        if (command == null)
+            return;
         if (command.equals("help")) {
             String helpMessage = "Basic Commands: \n" +
-                    "> o.time *EN/JP* **:** EN/JP server time.\n" +
+                    "> o.time *EN/JP/CN* **:** EN/JP/CN server time.\n" +
                     "> o.invite **:** invite code for this bot.";
             if (isModerator(member)) {
                 helpMessage += "\n" +
@@ -56,7 +75,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage(inviteMessage).queue();
         }
         else if (command.startsWith("time")) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmm aa");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");
             Date currentTime = new Date();
             String timeMessage = "Current REGION server time HHHH";
             if (command.toLowerCase().contains("jp")) {

@@ -1,5 +1,6 @@
 package Core.MessageEventListeners;
 
+import Core.Main;
 import ExternalAPIs.Dropbox.Dropbox;
 import Server.Server;
 import net.dv8tion.jda.api.entities.*;
@@ -19,11 +20,24 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             return;
         if (user.isBot() || user.isFake())
             return;
-        if (command == null)
-            return;
         if (messageReceivedEvent == null)
             return;
         if (!textChannel.getType().equals(ChannelType.TEXT))
+            return;
+        if (mentionedUsers.size() == 1 && mentionedUsers.get(0).equals(Main.getJda().getSelfUser())) {
+            if (isModerator(member)) {
+                textChannel.sendMessage(user.getAsMention() + ":heart: :heart: :heart:").queue();
+                String[] possibleReplies = new String[]{"I do not approve of being reliant on someone. Excessive intimacy is a hindrance in war, clouding one's judgment and forming obstacles to one's plans... Ah, I can't believe what I'm saying...",
+                        "Understood. I shall continue to provide assistance for you, whenever– Hey, wait a minute... Th-this isn't what you said would happen! ...No, that's not to say I oppose this! I just wasn't... mentally prepared... What I'm getting at is: give me a moment to think!",
+                        "We make a fine pair, both in the office and the war room. But that can backfire, as I may end up becoming reliant on you...",
+                        "Are you the one who summoned me here? I am Odin. I hereby take up post as your tactician.",
+                        "Y-you will hear from me at the court martial!"};
+                String pingReplyMessage = possibleReplies[(int) (Math.random() * possibleReplies.length)];
+                textChannel.sendMessage(pingReplyMessage).queue();
+                return;
+            }
+        }
+        if (command == null)
             return;
         // reminder toggles
             // pvp toggles
@@ -109,6 +123,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
         }
         if (reply != null) {
             textChannel.sendMessage(reply).queue();
+            Dropbox.uploadServerToDropbox(server);
+            return;
         }
         if (command.contains("channel")) {
             List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
@@ -143,6 +159,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
         }
         if (reply != null) {
             textChannel.sendMessage(reply).queue();
+            Dropbox.uploadServerToDropbox(server);
+            return;
         }
         if (command.contains("delchannel")) {
             List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
@@ -165,15 +183,16 @@ public class ModeratorEventListener extends OdinMessageEventListener {
         }
         if (reply != null) {
             textChannel.sendMessage(reply).queue();
+            Dropbox.uploadServerToDropbox(server);
+            return;
         }
-        if (command.equals("ping") && messageReceivedEvent.getMessage()
+        if (command.startsWith("ping") && messageReceivedEvent.getMessage()
                 .getMentionedChannels().size() == 1) {
             messageReceivedEvent.getMessage()
                     .getMentionedChannels().get(0)
-                    .sendMessage(user.getAsMention() + "pong!")
+                    .sendMessage(user.getAsMention() + " pong!")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
-        }
-        if (command.equals("configs")) {
+        } else if (command.equals("configs")) {
             StringBuilder configMessage = new StringBuilder();
             configMessage.append("Current general channels: ")
                     .append(generateChannelsAsMentionsFromIds(server.getGeneralChannels())).append("\n");
@@ -186,7 +205,6 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             }
             textChannel.sendMessage(configMessage.toString()).queue();
         }
-        Dropbox.uploadServerToDropbox(server);
     }
 
     private String getChannelsAsMentions(List<TextChannel> channelList) {

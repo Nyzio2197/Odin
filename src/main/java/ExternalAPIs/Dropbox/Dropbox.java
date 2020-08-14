@@ -17,25 +17,13 @@ import java.util.Scanner;
 
 public class Dropbox {
 
-    private static class DropboxToken {
-        public String DropboxToken;
-    }
-
-    public static String dropboxToken;
-
     protected static DbxRequestConfig config;
     protected static DbxClientV2 client;
 
     public static void bootUp() {
-        try {
-            dropboxToken = new Gson().fromJson(
-                    new FileReader(new File("src/main/java/ExternalAPIs/Dropbox/DropboxToken.json")), DropboxToken.class).DropboxToken;
-            config = DbxRequestConfig.newBuilder("odin").build();
-            client = new DbxClientV2(config, dropboxToken);
-            syncLocalWithDropbox();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        config = DbxRequestConfig.newBuilder("odin").build();
+        client = new DbxClientV2(config, System.getenv("DropboxToken"));
+        syncLocalWithDropbox();
 
     }
 
@@ -60,7 +48,7 @@ public class Dropbox {
             for (Metadata metadata : folder.getEntries()) {
                 if (metadata.getName().endsWith("maintenance.txt")) {
                     OutputStream outputStream = new FileOutputStream(metadata.getName());
-                    client.files().downloadBuilder("/" + metadata.getName()).download(outputStream);
+                    client.files().downloadBuilder("/v4/" + metadata.getName()).download(outputStream);
                     Scanner scanner = new Scanner(new File("maintenance.txt"));
                     String[] maintDateTime = scanner.nextLine().split(":::");
                     Main.nextMaintenanceDate = maintDateTime[0].equals("null") ? null : maintDateTime[0];
@@ -75,7 +63,7 @@ public class Dropbox {
                 String serverName = guild.getName();
                 System.out.println("Registering Old Server: " + serverName);
                 OutputStream outputStream = new FileOutputStream(metadata.getName());
-                client.files().downloadBuilder("/" + metadata.getName()).download(outputStream);
+                client.files().downloadBuilder("/v4/" + metadata.getName()).download(outputStream);
                 JsonReader jsonReader = new JsonReader(new FileReader(metadata.getName()));
                 Gson gson = new Gson();
                 if (Main.getServerList().add(gson.fromJson(jsonReader, Server.class)))

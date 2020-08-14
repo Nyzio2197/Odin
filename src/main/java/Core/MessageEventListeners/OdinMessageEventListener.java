@@ -26,6 +26,7 @@ public class OdinMessageEventListener implements EventListener {
     protected Guild guild;
     protected Server server;
     protected HashMap<String, Boolean> toggleHashMap;
+    protected List<User> mentionedUsers;
 
     @Override
     public void onEvent(@NotNull GenericEvent event) {
@@ -33,40 +34,13 @@ public class OdinMessageEventListener implements EventListener {
         if (messageReceivedEvent == null)
             return;
         command = getCommand(messageReceivedEvent.getMessage().getContentRaw());
-        if (command == null)
-            return;
         user = messageReceivedEvent.getAuthor();
         member = messageReceivedEvent.getMember();
         textChannel = messageReceivedEvent.getTextChannel();
         guild = messageReceivedEvent.getGuild();
         server = getServer(guild);
         toggleHashMap = server.getToggleHashMap();
-        List<User> mentionedUsers = messageReceivedEvent.getMessage().getMentionedUsers();
-        if (mentionedUsers.size() == 1 && mentionedUsers.get(0).equals(Main.getJda().getSelfUser())) {
-            if (isModerator(member)) {
-                textChannel.sendMessage(user.getAsMention() + ":heart: :heart: :heart:").queue();
-                String[] possibleReplies = new String[]{"I do not approve of being reliant on someone. Excessive intimacy is a hindrance in war, clouding one's judgment and forming obstacles to one's plans... Ah, I can't believe what I'm saying...",
-                        "Understood. I shall continue to provide assistance for you, whenever– Hey, wait a minute... Th-this isn't what you said would happen! ...No, that's not to say I oppose this! I just wasn't... mentally prepared... What I'm getting at is: give me a moment to think!",
-                        "We make a fine pair, both in the office and the war room. But that can backfire, as I may end up becoming reliant on you...",
-                        "Are you the one who summoned me here? I am Odin. I hereby take up post as your tactician.",
-                        "Y-you will hear from me at the court martial!"};
-                String pingReplyMessage = possibleReplies[(int) (Math.random() * possibleReplies.length)];
-                textChannel.sendMessage(pingReplyMessage).queue();
-            } else if (toggleHashMap.get(Server.PING)) {
-                String[] possibleReplies = new String[]{"I am not even disappointed, I simply wonder how someone as lousy as you became a commander in the first place.",
-                        "You lot already have no avenues to escape!",
-                        "Flee while you still can.",
-                        "You have missions. Leaving them unfinished would be a foolish choice.",
-                        "As time passes, you learn how futile your concerns are.",
-                        "Do not waste my time \"Commander\".",
-                        "I do not talk to insignificant people.",
-                        "I don't even know who you are.",
-                        "Are you sure you're a fully licensed commander?",
-                        "https://cdn.discordapp.com/emojis/730498676190871675.png?v=1"};
-                String pingReplyMessage = user.getAsMention() + " " + possibleReplies[(int) (Math.random() * possibleReplies.length)];
-                textChannel.sendMessage(pingReplyMessage).queue();
-            }
-        }
+        mentionedUsers = messageReceivedEvent.getMessage().getMentionedUsers();
     }
 
     public MessageReceivedEvent getMessageReceivedEvent(GenericEvent event) {
@@ -97,6 +71,8 @@ public class OdinMessageEventListener implements EventListener {
     }
 
     public String generateChannelsAsMentionsFromIds(ArrayList<String> channelIds) {
+        if (channelIds.size() == 0)
+            return "[]";
         JDA jda = Main.getJda();
         ArrayList<String> deadChannels = new ArrayList<>();
         StringBuilder channelAsMentions = new StringBuilder("[");

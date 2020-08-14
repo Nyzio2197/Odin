@@ -6,14 +6,11 @@ import Core.MessageEventListeners.ModeratorEventListener;
 import ExternalAPIs.Dropbox.Dropbox;
 import ExternalAPIs.Twitter.Twitter;
 import Server.Server;
-import com.google.gson.Gson;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,14 +26,8 @@ public class Main {
     public volatile static String nextMaintenanceDate,
             nextMaintenanceTime;
 
-    private static class JDAToken {
-        String JDAToken;
-    }
-
-    public static void main(String[] args) throws LoginException, InterruptedException, FileNotFoundException {
-        String JDAToken = new Gson().fromJson(
-                new FileReader("src/main/java/Core/JDAToken.json"), JDAToken.class).JDAToken;
-        JDABuilder builder = JDABuilder.createDefault(JDAToken);
+    public static void main(String[] args) throws LoginException, InterruptedException {
+        JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("o.help"));
         builder.addEventListeners(new MemberEventListener(),
                 new ModeratorEventListener(),
@@ -45,9 +36,9 @@ public class Main {
         serverList = new ArrayList<>();
 
         Thread dropboxThread = new Thread(Dropbox::bootUp);
-        //dropboxThread.start();
+        dropboxThread.start();
         Thread twitterThread = new Thread(Twitter::bootUp);
-        //twitterThread.start();
+        twitterThread.start();
 
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
