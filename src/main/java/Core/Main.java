@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,16 +27,17 @@ public class Main {
     public static void main(String[] args) throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("o.help"));
-        builder.addEventListeners(new MemberEventListener(),
-                new ModeratorEventListener(),
-                new DeveloperMessageEventListener());
         jda = builder.build().awaitReady();
         serverList = new ArrayList<>();
-
         Thread dropboxThread = new Thread(Dropbox::bootUp);
         dropboxThread.start();
         Thread twitterThread = new Thread(Twitter::bootUp);
         twitterThread.start();
+        dropboxThread.join();
+        System.out.println("Attaching Listeners");
+        jda.addEventListener(new MemberEventListener(),
+                new ModeratorEventListener(),
+                new DeveloperMessageEventListener());
 
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
