@@ -127,7 +127,7 @@ public class Main {
                     server.sendMessageToAnnouncement(message);
                 }
                 break;
-            case Server.TWITTER:
+            case Server.TWITTER_FEED:
                 for (Server server : serverList) {
                     server.sendMessageToTwitterFeed(message);
                 }
