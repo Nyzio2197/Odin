@@ -29,7 +29,7 @@ public class Main {
         serverList = new ArrayList<>();
         Thread dbxThread = new Thread(Dropbox::bootUp);
         dbxThread.start();
-        while (!Dropbox.isSyncing)
+        while (Dropbox.isSyncing)
             Thread.sleep(1000);
         Twitter.bootUp();
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
