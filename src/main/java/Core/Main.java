@@ -13,10 +13,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import javax.security.auth.login.LoginException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Main {
 
@@ -43,7 +40,9 @@ public class Main {
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
             public void run() {
-                String currentTime = new SimpleDateFormat("HHmmss").format(new Date());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+                String currentTime = dateFormat.format(new Date());
                 switch (currentTime) {
                     case "000000":
                         sendMessageToChannels("Kommandant, it is now 12:00 AM server side.\nDaily missions have reset.", Server.GENERAL, Server.DAILY);
@@ -64,7 +63,8 @@ public class Main {
                 }
             }
         };
-        new Timer().schedule(dailyRemindersTask, 0, 1000);
+        Timer dailyTimer = new Timer();
+        dailyTimer.schedule(dailyRemindersTask, 0, 1000);
         SimpleDateFormat yearTime = new SimpleDateFormat("MM/dd/yyyy");
         Date maintenanceDate = null;
         try {
@@ -104,7 +104,8 @@ public class Main {
                 }
             }
         };
-        new Timer().schedule(maintenanceReminderTask, 0, 1000);
+        Timer maintTimer = new Timer();
+        maintTimer.schedule(maintenanceReminderTask, 0, 1000);
     }
 
     public static ArrayList<Server> getServerList() {
@@ -127,7 +128,7 @@ public class Main {
                     server.sendMessageToAnnouncement(message);
                 }
                 break;
-            case Server.TWITTER_FEED:
+            case Server.TWITTER:
                 for (Server server : serverList) {
                     server.sendMessageToTwitterFeed(message);
                 }

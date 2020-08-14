@@ -3,6 +3,7 @@ package Server;
 import Core.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
@@ -100,11 +101,14 @@ public class Server {
     private void sendMessageToChannelList(String message, ArrayList<String> channelIdList) {
         ArrayList<String> deadChannels = new ArrayList<>();
         for (String channelId : channelIdList) {
-            TextChannel channel = Main.getJda() .getTextChannelById(channelId);
+            TextChannel channel = Main.getJda().getTextChannelById(channelId);
             if (channel == null) {
                 deadChannels.add(channelId);
                 continue;
             }
+            Message lastMessageInChannel = channel.getHistory().getRetrievedHistory().get(0);
+            if (lastMessageInChannel.getContentRaw().equals(message))
+                lastMessageInChannel.delete().queue();
             channel.sendMessage(message).queue();
         }
         for (String channelId : deadChannels) {
