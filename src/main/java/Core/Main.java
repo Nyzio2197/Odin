@@ -27,7 +27,10 @@ public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         serverList = new ArrayList<>();
-        Dropbox.bootUp();
+        Thread dbxThread = new Thread(Dropbox::bootUp);
+        dbxThread.start();
+        while (!Dropbox.isSyncing)
+            Thread.sleep(1000);
         Twitter.bootUp();
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("testing, do not call commands"));

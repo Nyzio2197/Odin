@@ -20,7 +20,7 @@ public class Dropbox {
     protected static DbxRequestConfig config;
     protected static DbxClientV2 client;
 
-    protected volatile static boolean isSyncing = false;
+    public volatile static boolean isSyncing = false;
 
     public static void bootUp() {
         config = DbxRequestConfig.newBuilder("odin").build();
