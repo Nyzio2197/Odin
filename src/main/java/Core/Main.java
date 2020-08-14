@@ -8,6 +8,7 @@ import ExternalAPIs.Twitter.Twitter;
 import Server.Server;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
@@ -25,20 +26,17 @@ public class Main {
             nextMaintenanceTime;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-        JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
-        builder.setActivity(Activity.playing("o.help"));
-        jda = builder.build().awaitReady();
         serverList = new ArrayList<>();
-        Thread dropboxThread = new Thread(Dropbox::bootUp);
-        dropboxThread.start();
-        Thread twitterThread = new Thread(Twitter::bootUp);
-        twitterThread.start();
-        dropboxThread.join();
+        Dropbox.bootUp();
+        Twitter.bootUp();
+        JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
+        builder.setActivity(Activity.playing("testing, do not call commands"));
+        builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
+        jda = builder.build().awaitReady();
         System.out.println("Attaching Listeners");
         jda.addEventListener(new MemberEventListener(),
                 new ModeratorEventListener(),
                 new DeveloperMessageEventListener());
-
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
             public void run() {

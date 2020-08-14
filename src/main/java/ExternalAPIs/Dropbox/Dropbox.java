@@ -20,6 +20,8 @@ public class Dropbox {
     protected static DbxRequestConfig config;
     protected static DbxClientV2 client;
 
+    protected volatile static boolean isSyncing = false;
+
     public static void bootUp() {
         config = DbxRequestConfig.newBuilder("odin").build();
         client = new DbxClientV2(config, System.getenv("DropboxToken"));
@@ -44,6 +46,7 @@ public class Dropbox {
 
     public static void syncLocalWithDropbox() {
         try {
+            isSyncing = true;
             ListFolderResult folder = client.files().listFolder("/v4");
             for (Metadata metadata : folder.getEntries()) {
                 if (metadata.getName().endsWith("maintenance.txt")) {
@@ -71,12 +74,16 @@ public class Dropbox {
                 else
                     System.out.println("Registration Failed.");
             }
+            isSyncing = false;
         } catch (DbxException | IOException e) {
             e.printStackTrace();
+            isSyncing = false;
         }
     }
 
     public static void uploadServerToDropbox(Server server) {
+        if (isSyncing)
+            return;
         try {
             Guild guild = Main.getJda().getGuildById(server.getGuildId());
             if (guild == null)
