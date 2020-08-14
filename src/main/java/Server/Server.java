@@ -108,7 +108,7 @@ public class Server {
             }
             Message lastMessageInChannel = channel.getHistory().getRetrievedHistory().get(0);
             if (lastMessageInChannel.getContentRaw().equals(message))
-                lastMessageInChannel.delete().queue();
+                continue;
             channel.sendMessage(message).queue();
         }
         for (String channelId : deadChannels) {
