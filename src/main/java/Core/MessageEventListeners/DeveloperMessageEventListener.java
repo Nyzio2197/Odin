@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class DeveloperMessageEventListener extends OdinMessageEventListener{
 
@@ -45,7 +46,7 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
                     String currentTime = new SimpleDateFormat("HHmmss").format(new Date());
                     if (currentTime.endsWith("0") ||
                             currentTime.endsWith("5"))
-                        mentionedChannels.get(0).sendMessage("Current time: " + currentTime).queue();
+                        mentionedChannels.get(0).sendMessage("Current time: " + currentTime).queue(message -> message.delete().queueAfter(3, TimeUnit.SECONDS));
                 }
             };
             Timer timer = new Timer();
