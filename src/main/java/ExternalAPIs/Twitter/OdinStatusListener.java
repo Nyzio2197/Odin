@@ -23,7 +23,7 @@ public class OdinStatusListener implements StatusListener {
         System.out.println("New Twitter Status https://twitter.com/AzurLane_EN/status/" + status.getId());
         System.out.println("Content: " + status.getText());
         Main.sendMessageToChannels("Kommandant, there is new mail from headquarters\n" +
-                "https://twitter.com/AzurLane_EN/status/" + status.getId(), Server.TWITTER_FEED, Server.TWITTER);
+                "https://twitter.com/AzurLane_EN/status/" + status.getId(), Server.TWITTER, Server.TWITTER_FEED);
         String text = status.getText().toLowerCase();
         if (text.contains("start maintenance on")) {
             String temp = text.substring(text.indexOf("on") + 3);
