@@ -72,7 +72,7 @@ public class OdinMessageEventListener implements EventListener {
         return newServer;
     }
 
-    public String generateChannelsAsMentionsFromIds(ArrayList<String> channelIds) {
+    public static String generateChannelsAsMentionsFromIds(ArrayList<String> channelIds) {
         if (channelIds.size() == 0)
             return "[]";
         JDA jda = Main.getJda();

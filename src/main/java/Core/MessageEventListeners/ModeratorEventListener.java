@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ModeratorEventListener extends OdinMessageEventListener {
@@ -128,6 +127,30 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             Dropbox.uploadServerToDropbox(server);
             return;
         }
+        if (command.contains("delchannel")) {
+            List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
+            if (command.contains("general")) {
+                for (TextChannel channel : mentionedChannels) {
+                    server.getGeneralChannels().remove(channel.getId());
+                }
+                reply = "Removed general channels: " + getChannelsAsMentions(mentionedChannels);
+            } else if (command.contains("announce")) {
+                for (TextChannel channel : mentionedChannels) {
+                    server.getGeneralChannels().remove(channel.getId());
+                }
+                reply = "Removed announcement channels: " + getChannelsAsMentions(mentionedChannels);
+            } else if (command.contains("twitter")) {
+                for (TextChannel channel : mentionedChannels) {
+                    server.getGeneralChannels().remove(channel.getId());
+                }
+                reply = "Removed twitter feed channels: " + getChannelsAsMentions(mentionedChannels);
+            }
+        }
+        if (reply != null) {
+            textChannel.sendMessage(reply).queue();
+            Dropbox.uploadServerToDropbox(server);
+            return;
+        }
         if (command.contains("channel")) {
             List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
             if (command.contains("general")) {
@@ -164,30 +187,6 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             Dropbox.uploadServerToDropbox(server);
             return;
         }
-        if (command.contains("delchannel")) {
-            List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
-            if (command.contains("general")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed general channels: " + getChannelsAsMentions(mentionedChannels);
-            } else if (command.contains("announce")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed announcement channels: " + getChannelsAsMentions(mentionedChannels);
-            } else if (command.contains("twitter")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed twitter feed channels: " + getChannelsAsMentions(mentionedChannels);
-            }
-        }
-        if (reply != null) {
-            textChannel.sendMessage(reply).queue();
-            Dropbox.uploadServerToDropbox(server);
-            return;
-        }
         if (command.startsWith("ping") && messageReceivedEvent.getMessage()
                 .getMentionedChannels().size() == 1) {
             messageReceivedEvent.getMessage()
@@ -195,17 +194,7 @@ public class ModeratorEventListener extends OdinMessageEventListener {
                     .sendMessage(user.getAsMention() + " pong!")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
         } else if (command.equals("configs")) {
-            StringBuilder configMessage = new StringBuilder();
-            configMessage.append("Current general channels: ")
-                    .append(generateChannelsAsMentionsFromIds(server.getGeneralChannels())).append("\n");
-            configMessage.append("Current announcement channels: ")
-                    .append(generateChannelsAsMentionsFromIds(server.getAnnouncementChannels())).append("\n");
-            configMessage.append("Current twitter feed channels: ")
-                    .append(generateChannelsAsMentionsFromIds(server.getTwitterFeedChannels())).append("\n");
-            for (Map.Entry<String, Boolean> entry : toggleHashMap.entrySet()) {
-                configMessage.append(entry.getKey()).append(": ").append(entry.getValue() ? "ON" : "OFF").append("\n");
-            }
-            textChannel.sendMessage(configMessage.toString()).queue();
+            textChannel.sendMessage(server.getConfigs()).queue();
         }
     }
 

@@ -1,6 +1,7 @@
 package Server;
 
 import Core.Main;
+import Core.MessageEventListeners.OdinMessageEventListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -8,6 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Server {
@@ -106,9 +108,11 @@ public class Server {
                 deadChannels.add(channelId);
                 continue;
             }
-            Message lastMessageInChannel = channel.getHistory().getRetrievedHistory().get(0);
-            if (lastMessageInChannel.getContentRaw().equals(message))
-                continue;
+            if (channel.getHistory().getRetrievedHistory().size() > 0) {
+                Message lastMessageInChannel = channel.getHistory().getRetrievedHistory().get(0);
+                if (lastMessageInChannel.getContentRaw().equals(message))
+                    continue;
+            }
             channel.sendMessage(message).queue();
         }
         for (String channelId : deadChannels) {
@@ -127,6 +131,20 @@ public class Server {
     @Override
     public int hashCode() {
         return Objects.hash(guildId);
+    }
+
+    public String getConfigs() {
+        StringBuilder configMessage = new StringBuilder();
+        configMessage.append("Current general channels: ")
+                .append(OdinMessageEventListener.generateChannelsAsMentionsFromIds(generalChannels)).append("\n");
+        configMessage.append("Current announcement channels: ")
+                .append(OdinMessageEventListener.generateChannelsAsMentionsFromIds(announcementChannels)).append("\n");
+        configMessage.append("Current twitter feed channels: ")
+                .append(OdinMessageEventListener.generateChannelsAsMentionsFromIds(twitterFeedChannels)).append("\n");
+        for (Map.Entry<String, Boolean> entry : toggleHashMap.entrySet()) {
+            configMessage.append(entry.getKey()).append(": ").append(entry.getValue() ? "ON" : "OFF").append("\n");
+        }
+        return configMessage.toString();
     }
 
 }
