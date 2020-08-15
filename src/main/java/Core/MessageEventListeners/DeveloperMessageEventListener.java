@@ -26,6 +26,8 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             return;
         if (command == null)
             return;
+        if (server == null)
+            return;
         if (messageReceivedEvent == null)
             return;
         if (!textChannel.getType().equals(ChannelType.TEXT))

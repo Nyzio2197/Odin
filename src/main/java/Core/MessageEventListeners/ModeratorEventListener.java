@@ -39,6 +39,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
         }
         if (command == null)
             return;
+        if (server == null)
+            return;
         // reminder toggles
             // pvp toggles
         String reply = null;

@@ -38,8 +38,7 @@ public class OdinMessageEventListener implements EventListener {
         member = messageReceivedEvent.getMember();
         textChannel = messageReceivedEvent.getTextChannel();
         guild = messageReceivedEvent.getGuild();
-        if (command != null)
-            server = getServer(guild);
+        server = getServer(guild);
         toggleHashMap = server.getToggleHashMap();
         mentionedUsers = messageReceivedEvent.getMessage().getMentionedUsers();
     }
@@ -64,6 +63,8 @@ public class OdinMessageEventListener implements EventListener {
         for (Server server : Main.getServerList())
             if (server.equals(new Server(guild)))
                 return server;
+        if (command == null)
+            return null;
         Server newServer = new Server(guild, guild.getJDA());
         Main.getServerList().add(newServer);
         System.out.println(new Date() + " Server added. Name: " + newServer.getServerName());

@@ -42,6 +42,8 @@ public class MemberEventListener extends OdinMessageEventListener {
         }
         if (command == null)
             return;
+        if (server == null)
+            return;
         if (command.equals("help")) {
             String helpMessage = "Basic Commands: \n" +
                     "> o.time *EN/JP/CN* **:** EN/JP/CN server time.\n" +
