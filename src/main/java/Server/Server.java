@@ -89,18 +89,20 @@ public class Server {
     }
 
     public void sendMessageToAnnouncement(String message) {
-        if (toggleHashMap.get(MAINTENANCE))
+        if (!toggleHashMap.get(MAINTENANCE))
             return;
         sendMessageToChannelList(message, announcementChannels);
     }
 
     public void sendMessageToTwitterFeed(String message) {
-        if (toggleHashMap.get(TWITTER_FEED))
+        if (!toggleHashMap.get(TWITTER_FEED))
             return;
         sendMessageToChannelList(message, twitterFeedChannels);
     }
 
     private void sendMessageToChannelList(String message, ArrayList<String> channelIdList) {
+        if (channelIdList.size() == 0)
+            return;
         ArrayList<String> deadChannels = new ArrayList<>();
         for (String channelId : channelIdList) {
             TextChannel channel = Main.getJda().getTextChannelById(channelId);

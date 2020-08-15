@@ -158,6 +158,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
                     reply = "Current general channels: " + generateChannelsAsMentionsFromIds(server.getGeneralChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
+                        if (server.getGeneralChannels().contains(channel.getId()))
+                            continue;
                         server.getGeneralChannels().add(channel.getId());
                     }
                     reply = "Added general channels: " + getChannelsAsMentions(mentionedChannels);
@@ -167,6 +169,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
                     reply = "Current announcement channels: " + generateChannelsAsMentionsFromIds(server.getAnnouncementChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
+                        if (server.getAnnouncementChannels().contains(channel.getId()))
+                            continue;
                         server.getAnnouncementChannels().add(channel.getId());
                     }
                     reply = "Added announcement channels: " + getChannelsAsMentions(mentionedChannels);
@@ -176,6 +180,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
                     reply = "Current twitter feed channels: " + generateChannelsAsMentionsFromIds(server.getTwitterFeedChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
+                        if (server.getTwitterFeedChannels().contains(channel.getId()))
+                            continue;
                         server.getTwitterFeedChannels().add(channel.getId());
                     }
                     reply = "Added twitter feed channels: " + getChannelsAsMentions(mentionedChannels);
