@@ -108,11 +108,6 @@ public class Server {
                 deadChannels.add(channelId);
                 continue;
             }
-            if (channel.getHistory().getRetrievedHistory().size() > 0) {
-                Message lastMessageInChannel = channel.getHistory().getRetrievedHistory().get(0);
-                if (lastMessageInChannel.getContentRaw().equals(message))
-                    continue;
-            }
             channel.sendMessage(message).queue();
         }
         for (String channelId : deadChannels) {
