@@ -1,1 +1,1 @@
-worker: java -jar build/libs/OdinV4-1.0-all.jar
+worker: java src/main/java/Core/Main.class

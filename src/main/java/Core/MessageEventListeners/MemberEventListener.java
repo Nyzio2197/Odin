@@ -2,7 +2,6 @@ package Core.MessageEventListeners;
 
 import Core.Main;
 import Server.Server;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
@@ -70,9 +69,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage(helpMessage).queue();
         }
         else if (command.equals("invite")) {
-            Message inviteMessage = new MessageBuilder().append("https://bit.ly/2AMrKEQ").build();
-            inviteMessage.suppressEmbeds(true);
-            textChannel.sendMessage(inviteMessage).queue();
+            textChannel.sendMessage("https://bit.ly/2AMrKEQ").queue();
         }
         else if (command.startsWith("time")) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");
