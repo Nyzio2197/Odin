@@ -25,13 +25,13 @@ public class Main {
             nextMaintenanceTime;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
+        JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
+        builder.setActivity(Activity.playing("o.help"));
+        builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
+        jda = builder.build().awaitReady();
         serverList = new ArrayList<>();
         Dropbox.bootUp();
         Twitter.bootUp();
-        JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
-        builder.setActivity(Activity.playing("testing, do not call commands"));
-        builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda = builder.build().awaitReady();
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
             public void run() {
