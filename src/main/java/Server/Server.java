@@ -3,14 +3,12 @@ package Server;
 import Core.Main;
 import Core.MessageEventListeners.OdinMessageEventListener;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Server {
 
@@ -110,7 +108,11 @@ public class Server {
                 deadChannels.add(channelId);
                 continue;
             }
-            channel.sendMessage(message).queue();
+            List<Role> listOfOdinRoles = channel.getGuild().getRolesByName("Odin", true);
+            if (listOfOdinRoles.size() == 1 && listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_WRITE))
+                channel.sendMessage(message).queue();
+            else
+                System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");
         }
         for (String channelId : deadChannels) {
             channelIdList.remove(channelId);
