@@ -3,6 +3,7 @@ package Core.MessageEventListeners;
 import Core.Main;
 import ExternalAPIs.Dropbox.Dropbox;
 import Server.Server;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ public class ModeratorEventListener extends OdinMessageEventListener {
         if (!textChannel.getType().equals(ChannelType.TEXT))
             return;
         if (mentionedUsers.size() == 1 && mentionedUsers.get(0).equals(Main.getJda().getSelfUser())) {
-            if (isModerator(member)) {
+            if (isModerator(member) || member.hasPermission(Permission.MESSAGE_MANAGE)) {
                 textChannel.sendMessage(user.getAsMention() + ":heart: :heart: :heart:").queue();
                 String[] possibleReplies = new String[]{"I do not approve of being reliant on someone. Excessive intimacy is a hindrance in war, clouding one's judgment and forming obstacles to one's plans... Ah, I can't believe what I'm saying...",
                         "Understood. I shall continue to provide assistance for you, whenever– Hey, wait a minute... Th-this isn't what you said would happen! ...No, that's not to say I oppose this! I just wasn't... mentally prepared... What I'm getting at is: give me a moment to think!",

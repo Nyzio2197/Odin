@@ -37,13 +37,13 @@ public class Server {
     private HashMap<String, Boolean> toggleHashMap;
 
     public Server(Guild guild, JDA jda) {
-        serverName = guild.getName();
         guildId = guild.getId();
+        Main.getServerList().add(this);
+        serverName = guild.getName();
         generalChannels = new ArrayList<>();
         announcementChannels = new ArrayList<>();
         twitterFeedChannels = new ArrayList<>();
         toggleHashMap = new HashMap<>();
-        Main.getServerList().add(this);
         toggleHashMap.put(PVP, true);
         toggleHashMap.put(DAILY, true);
         toggleHashMap.put(MAINTENANCE, true);
