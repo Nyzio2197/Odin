@@ -107,6 +107,7 @@ public class Main {
         jda.addEventListener(new MemberEventListener(),
                 new ModeratorEventListener(),
                 new DeveloperMessageEventListener());
+        jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
     public static ArrayList<Server> getServerList() {
