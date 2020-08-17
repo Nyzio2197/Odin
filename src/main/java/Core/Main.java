@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
-        builder.setActivity(Activity.playing("o.help"));
+        builder.setActivity(Activity.playing("cycling"));
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
         jda = builder.build().awaitReady();
         serverList = new ArrayList<>();
@@ -107,6 +107,7 @@ public class Main {
         jda.addEventListener(new MemberEventListener(),
                 new ModeratorEventListener(),
                 new DeveloperMessageEventListener());
+        jda.getPresence().setActivity(Activity.playing("o.help"));
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 

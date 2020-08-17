@@ -54,8 +54,7 @@ public class MemberEventListener extends OdinMessageEventListener {
                         "> o.ping *#channel* **:** send a temporary message in *#channel*. Useful to check for proper permissions.\n" +
                         "Channel Commands:\n" +
                         "> o.channel *group* **:** lists the current channels in *group*.\n" +
-                        "> o.channel *group* *#channel* **:** add channels to the *group* channels.\n" +
-                        "> o.delchannel *group* *#channel* **:** remove *#channel* from list of general channels.\n" +
+                        "> o.channel *group* *#channel* **:** add new channels to the *group* channels, and remove old ones.\n" +
                         "> *group* can be \"general\", \"announce\", \"twitter\"\n" +
                         ">      Day and PvP resets occur in general, along with the majority of maintenance countdown\n" +
                         ">      Maint t-12 and t-3 occur in announcement channels\n" +

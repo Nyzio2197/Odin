@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -130,64 +131,57 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             Dropbox.uploadServerToDropbox(server);
             return;
         }
-        if (command.contains("delchannel")) {
-            List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
-            if (command.contains("general")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed general channels: " + getChannelsAsMentions(mentionedChannels);
-            } else if (command.contains("announce")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed announcement channels: " + getChannelsAsMentions(mentionedChannels);
-            } else if (command.contains("twitter")) {
-                for (TextChannel channel : mentionedChannels) {
-                    server.getGeneralChannels().remove(channel.getId());
-                }
-                reply = "Removed twitter feed channels: " + getChannelsAsMentions(mentionedChannels);
-            }
-        }
-        if (reply != null) {
-            textChannel.sendMessage(reply).queue();
-            Dropbox.uploadServerToDropbox(server);
-            return;
-        }
         if (command.contains("channel")) {
             List<TextChannel> mentionedChannels = messageReceivedEvent.getMessage().getMentionedChannels();
+            List<TextChannel> deletedChannels = new ArrayList<>();
+            List<TextChannel> addedChannels = new ArrayList<>();
             if (command.contains("general")) {
                 if (mentionedChannels.isEmpty()) {
                     reply = "Current general channels: " + generateChannelsAsMentionsFromIds(server.getGeneralChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
-                        if (server.getGeneralChannels().contains(channel.getId()))
+                        if (server.getGeneralChannels().contains(channel.getId())) {
+                            server.getGeneralChannels().remove(channel.getId());
+                            deletedChannels.add(channel);
                             continue;
+                        }
                         server.getGeneralChannels().add(channel.getId());
+                        addedChannels.add(channel);
                     }
-                    reply = "Added general channels: " + getChannelsAsMentions(mentionedChannels);
+                    reply = "Removed general channels: " + getChannelsAsMentions(deletedChannels) + "\n" +
+                            "Added general channels: " + getChannelsAsMentions(addedChannels);
                 }
             } else if (command.contains("announce")) {
                 if (mentionedChannels.isEmpty()) {
                     reply = "Current announcement channels: " + generateChannelsAsMentionsFromIds(server.getAnnouncementChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
-                        if (server.getAnnouncementChannels().contains(channel.getId()))
+                        if (server.getAnnouncementChannels().contains(channel.getId())) {
+                            server.getAnnouncementChannels().remove(channel.getId());
+                            deletedChannels.add(channel);
                             continue;
+                        }
                         server.getAnnouncementChannels().add(channel.getId());
+                        addedChannels.add(channel);
                     }
-                    reply = "Added announcement channels: " + getChannelsAsMentions(mentionedChannels);
+                    reply = "Removed announcement channels: " + getChannelsAsMentions(deletedChannels) + "\n" +
+                            "Added announcement channels: " + getChannelsAsMentions(addedChannels);
                 }
             } else if (command.contains("twitter")) {
                 if (mentionedChannels.isEmpty()) {
                     reply = "Current twitter feed channels: " + generateChannelsAsMentionsFromIds(server.getTwitterFeedChannels());
                 } else {
                     for (TextChannel channel : mentionedChannels) {
-                        if (server.getTwitterFeedChannels().contains(channel.getId()))
+                        if (server.getTwitterFeedChannels().contains(channel.getId())) {
+                            server.getTwitterFeedChannels().remove(channel.getId());
+                            deletedChannels.add(channel);
                             continue;
+                        }
                         server.getTwitterFeedChannels().add(channel.getId());
+                        addedChannels.add(channel);
                     }
-                    reply = "Added twitter feed channels: " + getChannelsAsMentions(mentionedChannels);
+                    reply = "Removed twitter feed channels: " + getChannelsAsMentions(deletedChannels) + "\n" +
+                            "Added twitter feed channels: " + getChannelsAsMentions(addedChannels);
                 }
             }
         }
