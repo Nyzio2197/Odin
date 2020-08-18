@@ -11,7 +11,7 @@ Your Azur Lane EN Discord reminder bot.
 Join the Official Support Server [here](https://discord.gg/SGtY8am)
 
 ## FAQ
-Q: Who has powers over Odin?  <br /> \n
+Q: Who has powers over Odin?  <br />
 A: Anyone with the Manage Message permissions.  <br />
 
 Q: What is Odin ping?  <br />
