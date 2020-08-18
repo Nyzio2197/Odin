@@ -76,7 +76,7 @@ public class OdinMessageEventListener implements EventListener {
 
     public static String generateChannelsAsMentionsFromIds(ArrayList<String> channelIds) {
         if (channelIds.size() == 0)
-            return "[]";
+            return "[no channels set]";
         JDA jda = Main.getJda();
         ArrayList<String> deadChannels = new ArrayList<>();
         StringBuilder channelAsMentions = new StringBuilder("[");

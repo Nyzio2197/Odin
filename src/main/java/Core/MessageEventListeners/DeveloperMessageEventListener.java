@@ -63,7 +63,7 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             }
             timer.cancel();
         }
-        if (command.startsWith("setstatus")) {
+        else if (command.startsWith("setstatus")) {
             if (command.contains("dnd"))
                 Main.getJda().getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
             else if (command.contains("invis"))
@@ -73,10 +73,15 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             else if (command.contains("off"))
                 Main.getJda().getPresence().setStatus(OnlineStatus.OFFLINE);
         }
-        if (command.startsWith("list")) {
+        else if (command.startsWith("list")) {
             for (Server server : Main.getServerList()) {
-                textChannel.sendMessage(server.getServerName() + ":\n" + server.getConfigs()).queue();
+                textChannel.sendMessage(server.getServerName()  + " " + server.getGuildId() + ":\n" + server.getConfigs()).queue();
             }
+        }
+        else if (command.startsWith("getserver ")) {
+            String serverID = command.substring(command.indexOf(" "));
+            Server server = getServer(Main.getJda().getGuildById(serverID));
+            textChannel.sendMessage(server.getConfigs()).queue();
         }
     }
 }
