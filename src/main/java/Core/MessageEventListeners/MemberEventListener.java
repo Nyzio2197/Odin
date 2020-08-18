@@ -70,7 +70,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage(helpMessage).queue();
         }
         else if (command.equals("invite")) {
-            textChannel.sendMessage("https://bit.ly/2AMrKEQ").queue();
+            textChannel.sendMessage("https://discord.gg/SGtY8am").queue();
         }
         else if (command.startsWith("time")) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");

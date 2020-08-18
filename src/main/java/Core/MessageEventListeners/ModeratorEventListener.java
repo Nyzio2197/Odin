@@ -202,6 +202,8 @@ public class ModeratorEventListener extends OdinMessageEventListener {
     }
 
     private String getChannelsAsMentions(List<TextChannel> channelList) {
+        if (channelList.isEmpty())
+            return "[]";
         StringBuilder channelsAsMentions = new StringBuilder("[");
         for (TextChannel textChannel : channelList) {
             channelsAsMentions.append(textChannel.getAsMention()).append(", ");

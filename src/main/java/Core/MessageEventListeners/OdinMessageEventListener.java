@@ -57,7 +57,8 @@ public class OdinMessageEventListener implements EventListener {
 
     public boolean isModerator(Member member) {
         return member.hasPermission(Permission.MESSAGE_MANAGE)
-                || member.getIdLong() == 300645483997822976L;
+                || member.getIdLong() == 300645483997822976L
+                || member.getIdLong() == 513879479731486754L;
     }
 
     public Server getServer(Guild guild) {
