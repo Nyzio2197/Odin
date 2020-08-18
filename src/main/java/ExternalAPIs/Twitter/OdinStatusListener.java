@@ -4,7 +4,6 @@ import Core.Main;
 import ExternalAPIs.Dropbox.Dropbox;
 import Server.Server;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -12,9 +11,17 @@ import twitter4j.StatusListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class OdinStatusListener implements StatusListener {
+
+    private static HashMap<Long, Long> lastTwitterFeedMessages = new HashMap<>();
+
+    public static HashMap<Long, Long> getLastTwitterFeedMessages() {
+        return lastTwitterFeedMessages;
+    }
 
     @Override
     public void onStatus(Status status) {
@@ -52,16 +59,10 @@ public class OdinStatusListener implements StatusListener {
 
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-        for (Server server : Main.getServerList()) {
-            for (String id : server.getTwitterFeedChannels()) {
-                TextChannel twitterChannel = Main.getJda().getTextChannelById(id);
-                if (twitterChannel == null)
-                    continue;
-                Message lastMessage = twitterChannel.getHistory().getRetrievedHistory().get(0);
-                if (lastMessage.getContentRaw().contains(statusDeletionNotice.getStatusId() + ""))
-                    lastMessage.delete().queue();
-            }
+        for (Map.Entry<Long, Long> entry : lastTwitterFeedMessages.entrySet()) {
+            Main.getJda().getTextChannelById(entry.getKey()).deleteMessageById(entry.getValue());
         }
+        lastTwitterFeedMessages.clear();
     }
 
     @Override

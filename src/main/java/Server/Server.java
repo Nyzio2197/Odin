@@ -2,6 +2,7 @@ package Server;
 
 import Core.Main;
 import Core.MessageEventListeners.OdinMessageEventListener;
+import ExternalAPIs.Twitter.OdinStatusListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -110,7 +111,10 @@ public class Server {
             }
             List<Role> listOfOdinRoles = channel.getGuild().getRolesByName("Odin", true);
             if (listOfOdinRoles.size() == 1 && listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_WRITE))
-                channel.sendMessage(message).queue();
+                channel.sendMessage(message).queue(temp -> {
+                    if (message.contains("new mail from headquarters"))
+                        OdinStatusListener.getLastTwitterFeedMessages().put(Long.parseLong(channelId), temp.getIdLong());
+                });
             else
                 System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");
         }
