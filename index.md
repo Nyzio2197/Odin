@@ -8,6 +8,20 @@ Your Azur Lane EN Discord reminder bot.
 * remind users of upcoming maintenance (EN servers only)
 * remind users of night commissions when they arrive
 
-You can invite Odin to your server using this [link](https://bit.ly/2AMrKEQ)
 Join the Official Support Server [here](https://discord.gg/5MpCtQm)
 
+## FAQ
+Q: Who has powers over Odin?
+A: Anyone with the Manage Message permissions
+
+Q: What is Odin ping?
+A: Whether or not Odin will respond to members if pinged.
+
+
+# How to set-up Odin
+###### Basic instructions can be found using o.help
+There are 3 channel types: general, announcement, twitter feed
+General channels are the channels where daily and pvp reminders are sent, along with t-11 to t-4, t-2 hour maintenance reminders
+Announcement channels are where t-12, t-3 maintenance reminders are sent and also mandatory game updates notifications
+Twitter channels is where the @AzurLane_EN twitter feed is sent. 
+To add a channel to Odin, use o.channel *type* *#channels*
