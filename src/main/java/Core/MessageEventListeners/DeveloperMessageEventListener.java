@@ -1,6 +1,7 @@
 package Core.MessageEventListeners;
 
 import Core.Main;
+import ExternalAPIs.Dropbox.Dropbox;
 import Server.Server;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -40,9 +41,11 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
         } else if (command.startsWith("mainttime ")) {
             Main.nextMaintenanceTime = command.substring(command.indexOf(" ") + 1);
             System.out.println("mainttime set to " + Main.nextMaintenanceDate);
+            Dropbox.syncMaintenance();
         } else if (command.startsWith("maintdate ")) {
             Main.nextMaintenanceDate = command.substring(command.indexOf(" ") + 1);
             System.out.println("maintdate set to " + Main.nextMaintenanceDate);
+            Dropbox.syncMaintenance();
         }
         else if (command.startsWith("cycle ") && mentionedChannels.size() == 1) {
             TimerTask simpleCycle = new TimerTask() {
