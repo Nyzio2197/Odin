@@ -3,7 +3,6 @@ package Core.MessageEventListeners;
 import Core.Main;
 import ExternalAPIs.Dropbox.Dropbox;
 import Server.Server;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;

@@ -73,7 +73,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage("https://discord.gg/SGtY8am").queue();
         }
         else if (command.startsWith("time")) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
             Date currentTime = new Date();
             String timeMessage = "Current REGION server time HHHH";
             if (command.toLowerCase().contains("jp")) {
@@ -81,7 +81,7 @@ public class MemberEventListener extends OdinMessageEventListener {
                 textChannel.sendMessage(timeMessage.replace("REGION", "JP")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             } else if (command.toLowerCase().contains("cn")) {
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Beijing"));
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Guangzhou"));
                 textChannel.sendMessage(timeMessage.replace("REGION", "CN")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             } else {
