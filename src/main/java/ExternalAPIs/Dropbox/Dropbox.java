@@ -34,7 +34,7 @@ public class Dropbox {
             fileWriter.close();
             File file = new File("maintenance.txt");
             InputStream in = new FileInputStream(file);
-            client.files().uploadBuilder("/" + "maintenance.txt")
+            client.files().uploadBuilder("/v4/" + "maintenance.txt")
                     .withMode(WriteMode.OVERWRITE)
                     .uploadAndFinish(in);
         } catch (IOException | DbxException e) {
