@@ -79,7 +79,7 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             }
         }
         else if (command.startsWith("getserver ")) {
-            String serverID = command.substring(command.indexOf(" "));
+            String serverID = command.substring(command.indexOf(" ") + 1);
             Server server = getServer(Main.getJda().getGuildById(serverID));
             textChannel.sendMessage(server.getConfigs()).queue();
         }
