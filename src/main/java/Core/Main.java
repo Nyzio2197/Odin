@@ -121,22 +121,33 @@ public class Main {
     }
 
     public static void sendMessageToChannels(String message, String channel, String category) {
+        ArrayList<Server> deadServers = new ArrayList<>();
         switch (channel) {
             case Server.GENERAL:
                 for (Server server : serverList) {
+                    if (Main.getJda().getGuildById(server.getGuildId()) == null)
+                        deadServers.add(server);
                     server.sendMessageToGeneral(message, category);
                 }
                 break;
             case Server.ANNOUNCE:
                 for (Server server : serverList) {
+                    if (Main.getJda().getGuildById(server.getGuildId()) == null)
+                        deadServers.add(server);
                     server.sendMessageToAnnouncement(message);
                 }
                 break;
             case Server.TWITTER:
                 for (Server server : serverList) {
+                    if (Main.getJda().getGuildById(server.getGuildId()) == null)
+                        deadServers.add(server);
                     server.sendMessageToTwitterFeed(message);
                 }
                 break;
+        }
+        for (Server server : deadServers) {
+            Dropbox.deleteServer(server);
+            Main.getServerList().remove(server);
         }
     }
 

@@ -96,4 +96,13 @@ public class Dropbox {
 
     }
 
+    public static void deleteServer(Server server) {
+        try {
+            client.files().deleteV2("/v4/" + server.getGuildId() + ".json");
+        } catch (DbxException e) {
+            System.out.println("Failed to delete: " + server.getServerName() + " ::: " + server.getGuildId());
+            e.printStackTrace();
+        }
+    }
+
 }
