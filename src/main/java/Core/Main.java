@@ -86,6 +86,7 @@ public class Main {
                 if (now.endsWith("000")) {
                     System.out.println(now);
                     System.out.println(standard.format(finalMaintenanceDate));
+                    System.out.println((finalMaintenanceDate.getTime() - new Date().getTime()) / (60 * 60 * 1000.));
                 }
                 if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 12 * 60 * 60 * 1000)))) {
                     sendMessageToChannels("@everyone Kommandant, be advised :\nAll servers will go into maintenance in 12 hours from now. Please do not forget to bind your account to Twitter/FB/YoStar in order to prevent the loss of your progress.", Server.ANNOUNCE, Server.MAINTENANCE);
