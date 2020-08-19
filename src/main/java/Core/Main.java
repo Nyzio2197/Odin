@@ -63,6 +63,7 @@ public class Main {
         Timer dailyTimer = new Timer();
         dailyTimer.schedule(dailyRemindersTask, 0, 1000);
         SimpleDateFormat yearTime = new SimpleDateFormat("MM/dd/yyyy");
+        yearTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
         Date maintenanceDate = null;
         try {
             if (nextMaintenanceDate != null) {
@@ -79,7 +80,7 @@ public class Main {
             public void run() {
                 if (finalMaintenanceDate == null)
                     return;
-                SimpleDateFormat standard = new SimpleDateFormat("dd/MM/yyyy HHmmss");
+                SimpleDateFormat standard = new SimpleDateFormat("MM/dd/yyyy HHmmss");
                 standard.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 String now = standard.format(new Date());
                 if (now.endsWith("500") || now.endsWith("000"))
