@@ -39,6 +39,8 @@ public class OdinMessageEventListener implements EventListener {
         textChannel = messageReceivedEvent.getTextChannel();
         guild = messageReceivedEvent.getGuild();
         server = getServer(guild);
+        if (server == null)
+            return;
         toggleHashMap = server.getToggleHashMap();
         mentionedUsers = messageReceivedEvent.getMessage().getMentionedUsers();
     }
