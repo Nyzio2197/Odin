@@ -85,6 +85,8 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
         }
         else if (command.equals("delete")) {
             for (Map.Entry<Long, Long> entry : Main.lastSentMessages.entrySet()) {
+                if (Main.getJda().getTextChannelById(entry.getKey()) == null)
+                    System.out.println("couldn't delete message in channelID: " + entry.getKey() + " message: " +  entry.getValue());
                 Main.getJda().getTextChannelById(entry.getKey()).deleteMessageById(entry.getValue());
             }
         }
