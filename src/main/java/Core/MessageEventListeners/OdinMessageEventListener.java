@@ -65,11 +65,11 @@ public class OdinMessageEventListener implements EventListener {
 
     public Server getServer(Guild guild) {
         for (Server server : Main.getServerList())
-            if (server.equals(new Server(guild)))
+            if (server.getGuildId().equals(guild.getId()))
                 return server;
         if (command == null)
             return null;
-        Server newServer = new Server(guild, guild.getJDA());
+        Server newServer = new Server(guild);
         Main.getServerList().add(newServer);
         System.out.println(new Date() + " Server added. Name: " + newServer.getServerName());
         Dropbox.uploadServerToDropbox(newServer);

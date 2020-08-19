@@ -37,7 +37,7 @@ public class Server {
 
     private HashMap<String, Boolean> toggleHashMap;
 
-    public Server(Guild guild, JDA jda) {
+    public Server(Guild guild) {
         guildId = guild.getId();
         Main.getServerList().add(this);
         serverName = guild.getName();
@@ -51,10 +51,6 @@ public class Server {
         toggleHashMap.put(NIGHT_COM, true);
         toggleHashMap.put(TWITTER_FEED, false);
         toggleHashMap.put(PING, false);
-    }
-
-    public Server(Guild guild) {
-        guildId = guild.getId();
     }
 
     public String getServerName() {
@@ -119,7 +115,8 @@ public class Server {
                 System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");
         }
         for (String channelId : deadChannels) {
-            channelIdList.remove(channelId);
+            if (!channelIdList.remove(channelId))
+                System.out.println("failed to remove channel " + Main.getJda().getTextChannelById(channelId));
         }
     }
 
