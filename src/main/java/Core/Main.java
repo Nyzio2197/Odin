@@ -82,6 +82,8 @@ public class Main {
                 SimpleDateFormat standard = new SimpleDateFormat("dd/MM/yyyy HHmmss");
                 standard.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 String now = standard.format(new Date());
+                if (now.endsWith("500") || now.endsWith("000"))
+                    System.out.println(now);
                 if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 12 * 60 * 60 * 1000)))) {
                     sendMessageToChannels("@everyone Kommandant, be advised :\nAll servers will go into maintenance in 12 hours from now. Please do not forget to bind your account to Twitter/FB/YoStar in order to prevent the loss of your progress.", Server.ANNOUNCE, Server.MAINTENANCE);
                 } else if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 3 * 60 * 60 * 1000)))) {
