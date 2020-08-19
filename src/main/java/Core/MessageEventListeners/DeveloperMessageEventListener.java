@@ -11,10 +11,7 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class DeveloperMessageEventListener extends OdinMessageEventListener{
@@ -85,6 +82,11 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             String serverID = command.substring(command.indexOf(" ") + 1);
             Server server = getServer(Main.getJda().getGuildById(serverID));
             textChannel.sendMessage(server.getConfigs()).queue();
+        }
+        else if (command.equals("delete")) {
+            for (Map.Entry<Long, Long> entry : Main.lastSentMessages.entrySet()) {
+                Main.getJda().getTextChannelById(entry.getKey()).deleteMessageById(entry.getValue());
+            }
         }
     }
 }

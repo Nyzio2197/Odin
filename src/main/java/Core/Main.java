@@ -24,6 +24,8 @@ public class Main {
     public volatile static String nextMaintenanceDate,
             nextMaintenanceTime;
 
+    public volatile static HashMap<Long, Long> lastSentMessages;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("cycling"));
@@ -121,6 +123,7 @@ public class Main {
     }
 
     public static void sendMessageToChannels(String message, String channel, String category) {
+        lastSentMessages = new HashMap<>();
         ArrayList<Server> deadServers = new ArrayList<>();
         switch (channel) {
             case Server.GENERAL:

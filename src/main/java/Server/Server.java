@@ -110,6 +110,7 @@ public class Server {
                 channel.sendMessage(message).queue(temp -> {
                     if (message.contains("new mail from headquarters"))
                         OdinStatusListener.getLastTwitterFeedMessages().put(Long.parseLong(channelId), temp.getIdLong());
+                    Main.lastSentMessages.put(Long.parseLong(channelId), temp.getIdLong());
                 });
             else
                 System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");

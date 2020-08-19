@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class OdinStatusListener implements StatusListener {
 
-    private static HashMap<Long, Long> lastTwitterFeedMessages = new HashMap<>();
+    private static HashMap<Long, Long> lastTwitterFeedMessages;
 
     public static HashMap<Long, Long> getLastTwitterFeedMessages() {
         return lastTwitterFeedMessages;
@@ -29,6 +29,7 @@ public class OdinStatusListener implements StatusListener {
             return;
         System.out.println("New Twitter Status https://twitter.com/AzurLane_EN/status/" + status.getId());
         System.out.println("Content: " + status.getText());
+        lastTwitterFeedMessages = new HashMap<>();
         Main.sendMessageToChannels("Kommandant, there is new mail from headquarters\n" +
                 "https://twitter.com/AzurLane_EN/status/" + status.getId(), Server.TWITTER, Server.TWITTER_FEED);
         String text = status.getText().toLowerCase();
