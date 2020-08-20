@@ -33,6 +33,8 @@ public class OdinMessageEventListener implements EventListener {
         messageReceivedEvent = getMessageReceivedEvent(event);
         if (messageReceivedEvent == null)
             return;
+        if (!messageReceivedEvent.getChannelType().equals(ChannelType.TEXT))
+            return;
         command = getCommand(messageReceivedEvent.getMessage().getContentRaw());
         user = messageReceivedEvent.getAuthor();
         member = messageReceivedEvent.getMember();

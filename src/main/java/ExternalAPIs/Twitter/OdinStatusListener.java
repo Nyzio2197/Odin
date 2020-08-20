@@ -48,7 +48,7 @@ public class OdinStatusListener implements StatusListener {
             System.out.println("Setting maintenance time to " + time + " hours.");
             Main.nextMaintenanceTime = time;
             Dropbox.syncMaintenance();
-        } else if (text.contains("extend maintenance")) {
+        } else if (text.contains("extend") && text.contains("maintenance")) {
             int indexApprox = text.indexOf("approximately ");
             String time = null;
             if (indexApprox != -1)
