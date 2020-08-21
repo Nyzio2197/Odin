@@ -48,14 +48,14 @@ public class OdinStatusListener implements StatusListener {
             System.out.println("Setting maintenance time to " + time + " hours.");
             Main.nextMaintenanceTime = time;
             Dropbox.syncMaintenance();
-        } else if (text.contains("extend") && text.contains("maintenance")) {
+        } else if (text.contains("maintenance has ended")) {
+            Main.sendMessageToChannels("Kommandant, maintenance has ended. All servers are now back online", Server.GENERAL, Server.MAINTENANCE);
+        } else if (text.contains("extend maintenance") || text.contains("extend the maintenance")) {
             int indexApprox = text.indexOf("approximately ");
             String time = null;
             if (indexApprox != -1)
                 time = text.substring(indexApprox + 14, indexApprox + 16).trim();
             Main.sendMessageToChannels("Kommandant, maintenance has been extended" + (time == null ? "." : " by " + time + "hours"), Server.GENERAL, Server.MAINTENANCE);
-        } else if (text.contains("maintenance has ended")) {
-            Main.sendMessageToChannels("Kommandant, maintenance has ended. All servers are now back online", Server.GENERAL, Server.MAINTENANCE);
         }
     }
 
