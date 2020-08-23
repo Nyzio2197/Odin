@@ -111,12 +111,6 @@ public class Server {
                         OdinStatusListener.getLastTwitterFeedMessages().put(Long.parseLong(channelId), temp.getIdLong());
                     Main.lastSentMessages.put(Long.parseLong(channelId), temp.getIdLong());
                 });
-                if (listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_HISTORY)) {
-                    channel.getHistory().retrievePast(1).complete();
-                    if (channel.getHistory().getRetrievedHistory().get(0).getAuthor().equals(Main.getJda().getSelfUser())) {
-                        channel.getHistory().getRetrievedHistory().get(0).delete().queue();
-                    }
-                }
             else
                 System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");
         }
