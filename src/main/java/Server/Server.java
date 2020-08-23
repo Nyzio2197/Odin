@@ -112,6 +112,7 @@ public class Server {
                     Main.lastSentMessages.put(Long.parseLong(channelId), temp.getIdLong());
                 });
                 if (listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_HISTORY)) {
+                    channel.getHistory().retrievePast(1);
                     if (channel.getHistory().getRetrievedHistory().get(0).getAuthor().equals(Main.getJda().getSelfUser())) {
                         channel.getHistory().getRetrievedHistory().get(0).delete().queue();
                     }
