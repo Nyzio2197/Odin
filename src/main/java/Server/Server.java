@@ -3,7 +3,6 @@ package Server;
 import Core.Main;
 import Core.MessageEventListeners.OdinMessageEventListener;
 import ExternalAPIs.Twitter.OdinStatusListener;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
@@ -13,11 +12,11 @@ import java.util.*;
 
 public class Server {
 
-    private String serverName;
+    private final String serverName;
 
     private final String guildId;
 
-    private ArrayList<String> generalChannels,
+    private final ArrayList<String> generalChannels,
             announcementChannels,
             twitterFeedChannels;
 
@@ -35,7 +34,7 @@ public class Server {
     public final static String ANNOUNCE = "announcement";
     public final static String TWITTER = "twitter";
 
-    private HashMap<String, Boolean> toggleHashMap;
+    private final HashMap<String, Boolean> toggleHashMap;
 
     public Server(Guild guild) {
         guildId = guild.getId();
@@ -112,6 +111,11 @@ public class Server {
                         OdinStatusListener.getLastTwitterFeedMessages().put(Long.parseLong(channelId), temp.getIdLong());
                     Main.lastSentMessages.put(Long.parseLong(channelId), temp.getIdLong());
                 });
+                if (listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_HISTORY)) {
+                    if (channel.getHistory().getRetrievedHistory().get(0).getAuthor().equals(Main.getJda().getSelfUser())) {
+                        channel.getHistory().getRetrievedHistory().get(0).delete().queue();
+                    }
+                }
             else
                 System.out.println("Failed to send message in " + serverName + ", channel " + channel.getAsMention() + " due to lack of permissions.");
         }
