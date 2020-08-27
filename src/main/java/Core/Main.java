@@ -21,7 +21,6 @@ public class Main {
 
     private static JDA jda;
     private volatile static ArrayList<Server> serverList;
-    private static int listSize = serverList.size();
 
     public volatile static String nextMaintenanceDate,
             nextMaintenanceTime;
