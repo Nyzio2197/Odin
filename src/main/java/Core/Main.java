@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.security.auth.login.LoginException;
 import java.text.ParseException;
@@ -20,11 +21,12 @@ public class Main {
 
     private static JDA jda;
     private volatile static ArrayList<Server> serverList;
+    private static int listSize = serverList.size();
 
     public volatile static String nextMaintenanceDate,
             nextMaintenanceTime;
 
-    public volatile static HashMap<Long, Long> lastSentMessages;
+    public volatile static ArrayList<Message> lastSentMessages;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
@@ -124,7 +126,7 @@ public class Main {
     }
 
     public static void sendMessageToChannels(String message, String channel, String category) {
-        lastSentMessages = new HashMap<>();
+        lastSentMessages = new ArrayList<>();
         ArrayList<Server> deadServers = new ArrayList<>();
         switch (channel) {
             case Server.GENERAL:

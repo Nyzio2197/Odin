@@ -6,6 +6,7 @@ import Server.Server;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
@@ -84,10 +85,8 @@ public class DeveloperMessageEventListener extends OdinMessageEventListener{
             textChannel.sendMessage(server.getConfigs()).queue();
         }
         else if (command.equals("delete")) {
-            for (Map.Entry<Long, Long> entry : Main.lastSentMessages.entrySet()) {
-                if (Main.getJda().getTextChannelById(entry.getKey()) == null)
-                    System.out.println("couldn't delete message in channelID: " + entry.getKey() + " message: " +  entry.getValue());
-                Main.getJda().getTextChannelById(entry.getKey()).deleteMessageById(entry.getValue());
+            for (Message message : Main.lastSentMessages) {
+                message.delete().queue();
             }
         }
     }

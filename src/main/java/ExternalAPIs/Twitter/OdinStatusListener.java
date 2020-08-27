@@ -10,16 +10,13 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class OdinStatusListener implements StatusListener {
 
-    private static HashMap<Long, Long> lastTwitterFeedMessages;
+    private static ArrayList<Message> lastTwitterFeedMessages;
 
-    public static HashMap<Long, Long> getLastTwitterFeedMessages() {
+    public static ArrayList<Message> getLastTwitterFeedMessages() {
         return lastTwitterFeedMessages;
     }
 
@@ -29,7 +26,7 @@ public class OdinStatusListener implements StatusListener {
             return;
         System.out.println("New Twitter Status https://twitter.com/AzurLane_EN/status/" + status.getId());
         System.out.println("Content: " + status.getText());
-        lastTwitterFeedMessages = new HashMap<>();
+        lastTwitterFeedMessages = new ArrayList<>();
         Main.sendMessageToChannels("Kommandant, there is new mail from headquarters\n" +
                 "https://twitter.com/AzurLane_EN/status/" + status.getId(), Server.TWITTER, Server.TWITTER_FEED);
         String text = status.getText().toLowerCase();
@@ -61,8 +58,8 @@ public class OdinStatusListener implements StatusListener {
 
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-        for (Map.Entry<Long, Long> entry : lastTwitterFeedMessages.entrySet()) {
-            Main.getJda().getTextChannelById(entry.getKey()).deleteMessageById(entry.getValue());
+        for (Message message : lastTwitterFeedMessages) {
+            message.delete().queue();
         }
         lastTwitterFeedMessages.clear();
     }

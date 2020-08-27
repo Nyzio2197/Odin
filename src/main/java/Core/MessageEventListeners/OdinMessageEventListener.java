@@ -75,6 +75,7 @@ public class OdinMessageEventListener implements EventListener {
         Main.getServerList().add(newServer);
         System.out.println(new Date() + " Server added. Name: " + newServer.getServerName());
         Dropbox.uploadServerToDropbox(newServer);
+
         return newServer;
     }
 
