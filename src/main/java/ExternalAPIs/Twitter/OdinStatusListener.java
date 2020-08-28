@@ -47,6 +47,7 @@ public class OdinStatusListener implements StatusListener {
             Dropbox.syncMaintenance();
         } else if (text.contains("maintenance has ended")) {
             Main.sendMessageToChannels("Kommandant, maintenance has ended. All servers are now back online", Server.GENERAL, Server.MAINTENANCE);
+            Main.inMaintenance = false;
         } else if (text.contains("extend maintenance") || text.contains("extend the maintenance")) {
             int indexApprox = text.indexOf("approximately ");
             String time = null;

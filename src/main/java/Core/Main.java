@@ -25,6 +25,8 @@ public class Main {
     public volatile static String nextMaintenanceDate,
             nextMaintenanceTime;
 
+    public volatile static boolean inMaintenance;
+
     public volatile static ArrayList<Message> lastSentMessages;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
@@ -38,6 +40,9 @@ public class Main {
         TimerTask dailyRemindersTask = new TimerTask() {
             @Override
             public void run() {
+                if (inMaintenance) {
+                    return;
+                }
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 String currentTime = dateFormat.format(new Date());
@@ -90,6 +95,18 @@ public class Main {
                     sendMessageToChannels("@here Kommandant, be advised :\nAll servers will go into maintenance in 3 hours.", Server.ANNOUNCE, Server.MAINTENANCE);
                 } else if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 60 * 60 * 1000)))) {
                     sendMessageToChannels("Kommandant, there is 1 hour left until maintenance begins.", Server.GENERAL, Server.MAINTENANCE);
+                    Thread maintenanceStartThread = new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(59*60*1000);
+                                inMaintenance = true;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    maintenanceStartThread.start();
                 } else if (now.equals(standard.format(finalMaintenanceDate))) {
                     sendMessageToChannels("Kommandant, maintenance has begun. It will last approximately MAINT hours.".replace("MAINT", nextMaintenanceTime == null ? "unknown" : nextMaintenanceTime), Server.GENERAL, Server.MAINTENANCE);
                 } else {
