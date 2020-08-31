@@ -1,8 +1,8 @@
-package ExternalAPIs.Twitter;
+package com.axcdevelopment.odin.ExternalAPIs.Twitter;
 
-import Core.Main;
-import ExternalAPIs.Dropbox.Dropbox;
-import Server.Server;
+import com.axcdevelopment.odin.Core.Main;
+import com.axcdevelopment.odin.ExternalAPIs.Dropbox.Dropbox;
+import com.axcdevelopment.odin.Server.Server;
 import net.dv8tion.jda.api.entities.Message;
 import twitter4j.StallWarning;
 import twitter4j.Status;

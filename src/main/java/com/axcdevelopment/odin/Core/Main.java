@@ -1,11 +1,11 @@
-package Core;
+package com.axcdevelopment.odin.Core;
 
-import Core.MessageEventListeners.DeveloperMessageEventListener;
-import Core.MessageEventListeners.MemberEventListener;
-import Core.MessageEventListeners.ModeratorEventListener;
-import ExternalAPIs.Dropbox.Dropbox;
-import ExternalAPIs.Twitter.Twitter;
-import Server.Server;
+import com.axcdevelopment.odin.Core.MessageEventListeners.DeveloperMessageEventListener;
+import com.axcdevelopment.odin.Core.MessageEventListeners.MemberEventListener;
+import com.axcdevelopment.odin.Core.MessageEventListeners.ModeratorEventListener;
+import com.axcdevelopment.odin.ExternalAPIs.Dropbox.Dropbox;
+import com.axcdevelopment.odin.ExternalAPIs.Twitter.Twitter;
+import com.axcdevelopment.odin.Server.Server;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;

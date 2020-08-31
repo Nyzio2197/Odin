@@ -1,4 +1,4 @@
-package ExternalAPIs.Twitter;
+package com.axcdevelopment.odin.ExternalAPIs.Twitter;
 
 import twitter4j.FilterQuery;
 import twitter4j.TwitterStream;

@@ -1,8 +1,8 @@
-package Core.MessageEventListeners;
+package com.axcdevelopment.odin.Core.MessageEventListeners;
 
-import Core.Main;
-import ExternalAPIs.Dropbox.Dropbox;
-import Server.Server;
+import com.axcdevelopment.odin.Core.Main;
+import com.axcdevelopment.odin.ExternalAPIs.Dropbox.Dropbox;
+import com.axcdevelopment.odin.Server.Server;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ModeratorEventListener extends OdinMessageEventListener {
+public class ModeratorEventListener extends MemberEventListener {
 
     @Override
     public void onEvent(@NotNull GenericEvent event) {

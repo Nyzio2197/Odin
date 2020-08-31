@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-mainClassName = 'Core.Main'
+mainClassName = 'com.axcdevelopment.odin.Core.Main'
 
 group 'org.example'
 version '1.0'

@@ -1,7 +1,7 @@
-package ExternalAPIs.Dropbox;
+package com.axcdevelopment.odin.ExternalAPIs.Dropbox;
 
-import Core.Main;
-import Server.Server;
+import com.axcdevelopment.odin.Core.Main;
+import com.axcdevelopment.odin.Server.Server;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
@@ -61,7 +61,7 @@ public class Dropbox {
                 if (guild == null)
                     continue;
                 String serverName = guild.getName();
-                System.out.println("Registering Old Server: " + serverName);
+                System.out.println("Registering Old com.axcdevelopment.odin.Server: " + serverName);
                 OutputStream outputStream = new FileOutputStream(metadata.getName());
                 client.files().downloadBuilder("/v4/" + metadata.getName()).download(outputStream);
                 JsonReader jsonReader = new JsonReader(new FileReader(metadata.getName()));

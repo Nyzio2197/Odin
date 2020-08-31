@@ -1,8 +1,8 @@
-package Server;
+package com.axcdevelopment.odin.Server;
 
-import Core.Main;
-import Core.MessageEventListeners.OdinMessageEventListener;
-import ExternalAPIs.Twitter.OdinStatusListener;
+import com.axcdevelopment.odin.Core.Main;
+import com.axcdevelopment.odin.Core.MessageEventListeners.OdinMessageEventListener;
+import com.axcdevelopment.odin.ExternalAPIs.Twitter.OdinStatusListener;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;

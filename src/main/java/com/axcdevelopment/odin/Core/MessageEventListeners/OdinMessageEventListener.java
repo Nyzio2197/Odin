@@ -1,8 +1,8 @@
-package Core.MessageEventListeners;
+package com.axcdevelopment.odin.Core.MessageEventListeners;
 
-import Core.Main;
-import ExternalAPIs.Dropbox.Dropbox;
-import Server.Server;
+import com.axcdevelopment.odin.Core.Main;
+import com.axcdevelopment.odin.ExternalAPIs.Dropbox.Dropbox;
+import com.axcdevelopment.odin.Server.Server;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -73,7 +73,7 @@ public class OdinMessageEventListener implements EventListener {
             return null;
         Server newServer = new Server(guild);
         Main.getServerList().add(newServer);
-        System.out.println(new Date() + " Server added. Name: " + newServer.getServerName());
+        System.out.println(new Date() + " com.axcdevelopment.odin.Server added. Name: " + newServer.getServerName());
         Dropbox.uploadServerToDropbox(newServer);
 
         return newServer;
