@@ -73,7 +73,7 @@ public class OdinMessageEventListener implements EventListener {
             return null;
         Server newServer = new Server(guild);
         Main.getServerList().add(newServer);
-        System.out.println(new Date() + " com.axcdevelopment.odin.Server added. Name: " + newServer.getServerName());
+        System.out.println(new Date() + " Server added. Name: " + newServer.getServerName());
         Dropbox.uploadServerToDropbox(newServer);
 
         return newServer;
