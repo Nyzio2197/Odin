@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ModeratorEventListener extends MemberEventListener {
+public class ModeratorEventListener extends OdinMessageEventListener {
 
     @Override
     public void onEvent(@NotNull GenericEvent event) {
