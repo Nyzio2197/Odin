@@ -61,7 +61,7 @@ public class Dropbox {
                 if (guild == null)
                     continue;
                 String serverName = guild.getName();
-                System.out.println("Registering Old com.axcdevelopment.odin.Server: " + serverName);
+                System.out.println("Registering Old Server: " + serverName);
                 OutputStream outputStream = new FileOutputStream(metadata.getName());
                 client.files().downloadBuilder("/v4/" + metadata.getName()).download(outputStream);
                 JsonReader jsonReader = new JsonReader(new FileReader(metadata.getName()));
