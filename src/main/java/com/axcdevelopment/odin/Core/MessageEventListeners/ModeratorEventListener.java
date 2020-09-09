@@ -205,7 +205,11 @@ public class ModeratorEventListener extends OdinMessageEventListener {
             return "[]";
         StringBuilder channelsAsMentions = new StringBuilder("[");
         for (TextChannel textChannel : channelList) {
-            channelsAsMentions.append(textChannel.getAsMention()).append(", ");
+            if (textChannel.canTalk()) {
+                channelsAsMentions.append(textChannel.getAsMention()).append(", ");
+            } else {
+                channelsAsMentions.append(textChannel.getAsMention()).append(" (I can't talk here), ");
+            }
         }
         return channelsAsMentions.substring(0, channelsAsMentions.length() - 2) + "]";
     }
