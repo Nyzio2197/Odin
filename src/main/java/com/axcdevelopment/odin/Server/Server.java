@@ -3,9 +3,7 @@ package com.axcdevelopment.odin.Server;
 import com.axcdevelopment.odin.Core.Main;
 import com.axcdevelopment.odin.Core.MessageEventListeners.OdinMessageEventListener;
 import com.axcdevelopment.odin.ExternalAPIs.Twitter.OdinStatusListener;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.*;
@@ -104,11 +102,13 @@ public class Server {
                 deadChannels.add(channelId);
                 continue;
             }
-            List<Role> listOfOdinRoles = channel.getGuild().getRolesByName("Odin", true);
-            if (listOfOdinRoles.size() == 1 && listOfOdinRoles.get(0).getPermissions(channel).contains(Permission.MESSAGE_WRITE))
+            if (channel.canTalk())
                 channel.sendMessage(message).queue(temp -> {
-                    if (message.contains("https://twitter.com/AzurLane_EN"))
+                    if (message.contains("https://twitter.com/AzurLane_EN")) {
                         OdinStatusListener.getLastTwitterFeedMessages().add(temp);
+                    } else if (message.contains("https://i.imgur.com/roy6tih.jpg")) {
+                        temp.suppressEmbeds(true).queue();
+                    }
                     Main.lastSentMessages.add(temp);
                 });
             else

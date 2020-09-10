@@ -90,7 +90,8 @@ public class Main {
                 standard.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 String now = standard.format(new Date());
                 if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 12 * 60 * 60 * 1000)))) {
-                    sendMessageToChannels("@everyone Kommandant, be advised :\nAll servers will go into maintenance in 12 hours from now. Please do not forget to bind your account to Twitter/FB/YoStar in order to prevent the loss of your progress.", Server.ANNOUNCE, Server.MAINTENANCE);
+                    sendMessageToChannels("@everyone Kommandant, be advised :\nAll servers will go into maintenance in 12 hours from now. Please do not forget to bind your account to Twitter/FB/YoStar in order to prevent the loss of your progress.\n\n", Server.ANNOUNCE, Server.MAINTENANCE);
+                    sendMessageToChannels("https://i.imgur.com/roy6tih.jpg", Server.ANNOUNCE, Server.MAINTENANCE);
                 } else if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 3 * 60 * 60 * 1000)))) {
                     sendMessageToChannels("@here Kommandant, be advised :\nAll servers will go into maintenance in 3 hours.", Server.ANNOUNCE, Server.MAINTENANCE);
                 } else if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 60 * 60 * 1000)))) {
