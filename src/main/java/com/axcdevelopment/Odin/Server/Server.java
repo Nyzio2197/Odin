@@ -127,25 +127,25 @@ public class Server {
 
     public void editToggles(TextChannel textChannel) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        Activity.Emoji emoji1 = new Activity.Emoji("U+0031");
-        Activity.Emoji emoji2 = new Activity.Emoji("U+0032");
-        Activity.Emoji emoji3 = new Activity.Emoji("U+0033");
-        Activity.Emoji emoji4 = new Activity.Emoji("U+0034");
-        Activity.Emoji emoji5 = new Activity.Emoji("U+0035");
-        Activity.Emoji emoji6 = new Activity.Emoji("U+0036");
-        Activity.Emoji emoji7 = new Activity.Emoji("U+0037");
-        Activity.Emoji emoji8 = new Activity.Emoji("U+0038");
+        Activity.Emoji emoji1 = new Activity.Emoji("U+31");
+        Activity.Emoji emoji2 = new Activity.Emoji("U+32");
+        Activity.Emoji emoji3 = new Activity.Emoji("U+33");
+        Activity.Emoji emoji4 = new Activity.Emoji("U+34");
+        Activity.Emoji emoji5 = new Activity.Emoji("U+35");
+        Activity.Emoji emoji6 = new Activity.Emoji("U+36");
+        Activity.Emoji emoji7 = new Activity.Emoji("U+37");
+        Activity.Emoji emoji8 = new Activity.Emoji("U+38");
         embedBuilder.setTitle(name)
                 .setThumbnail(textChannel.getGuild().getIconUrl())
                 .setColor(Color.CYAN)
-                .addField(emoji1 + " " + DAILY, String.valueOf(toggleHashMap.get(DAILY)), false)
-                .addField(emoji2 + " " + PVP, String.valueOf(toggleHashMap.get(PVP)), false)
-                .addField(emoji3 + " " + NIGHT_COM, String.valueOf(toggleHashMap.get(NIGHT_COM)), false)
-                .addField(emoji4 + " " + TWITTER_FEED, String.valueOf(toggleHashMap.get(TWITTER_FEED)), false)
-                .addField(emoji1 + " " + MAINTENANCE, String.valueOf(toggleHashMap.get(MAINTENANCE)), false)
-                .addField(emoji1 + " " + MAINT_PING, String.valueOf(toggleHashMap.get(MAINT_PING)), false)
-                .addField(emoji1 + " " + COUNTDOWN, String.valueOf(toggleHashMap.get(COUNTDOWN)), false)
-                .addField(emoji1 + " " + PING_REPLY, String.valueOf(toggleHashMap.get(PING_REPLY)), false);
+                .addField(emoji1 + " " + DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
+                .addField(emoji2 + " " + PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
+                .addField(emoji3 + " " + NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
+                .addField(emoji4 + " " + TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
+                .addField(emoji5 + " " + MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
+                .addField(emoji6 + " " + MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
+                .addField(emoji7 + " " + COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
+                .addField(emoji8 + " " + PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
         textChannel.sendMessage(embedBuilder.build()).queue(message -> {
             message.addReaction(emoji1.getAsCodepoints()).queue();
             message.addReaction(emoji2.getAsCodepoints()).queue();
@@ -180,18 +180,20 @@ public class Server {
                         toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
                     } else if (unicode.equals(emoji8.getAsCodepoints())) {
                         toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
+                    } else {
+                        return;
                     }
                     embedBuilder.setTitle(name)
                             .setThumbnail(textChannel.getGuild().getIconUrl())
                             .setColor(Color.CYAN)
-                            .addField(emoji1 + " " + DAILY, String.valueOf(toggleHashMap.get(DAILY)), false)
-                            .addField(emoji2 + " " + PVP, String.valueOf(toggleHashMap.get(PVP)), false)
-                            .addField(emoji3 + " " + NIGHT_COM, String.valueOf(toggleHashMap.get(NIGHT_COM)), false)
-                            .addField(emoji4 + " " + TWITTER_FEED, String.valueOf(toggleHashMap.get(TWITTER_FEED)), false)
-                            .addField(emoji1 + " " + MAINTENANCE, String.valueOf(toggleHashMap.get(MAINTENANCE)), false)
-                            .addField(emoji1 + " " + MAINT_PING, String.valueOf(toggleHashMap.get(MAINT_PING)), false)
-                            .addField(emoji1 + " " + COUNTDOWN, String.valueOf(toggleHashMap.get(COUNTDOWN)), false)
-                            .addField(emoji1 + " " + PING_REPLY, String.valueOf(toggleHashMap.get(PING_REPLY)), false);
+                            .addField(DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
+                            .addField(PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
+                            .addField(NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
+                            .addField(TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
+                            .addField(MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
+                            .addField(MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
+                            .addField(COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
+                            .addField(PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
                     message.editMessage(embedBuilder.build()).queue();
                 }
             });
@@ -203,18 +205,22 @@ public class Server {
         embedBuilder.setTitle(name)
                 .setThumbnail(textChannel.getGuild().getIconUrl())
                 .setColor(Color.CYAN)
-                .addField("General Channels", Discord.getMentions(general).toString(), false)
-                .addField("Announcement Channels", Discord.getMentions(announce).toString(), false)
-                .addField("Twitter Channels", Discord.getMentions(twitter).toString(), false)
+                .addField("General Channels", Discord.getMentions(general).toString().equals("[]") ?
+                        "[No Channels Yet]" : Discord.getMentions(general).toString(), false)
+                .addField("Announcement Channels", Discord.getMentions(announce).toString().equals("[]") ?
+                        "[No Channels Yet]" : Discord.getMentions(announce).toString(), false)
+                .addField("Twitter Channels", Discord.getMentions(twitter).toString().equals("[]") ?
+                        "[No Channels Yet]" : Discord.getMentions(twitter).toString(), false)
                 .addBlankField(false)
-                .addField(DAILY, String.valueOf(toggleHashMap.get(DAILY)), false)
-                .addField(PVP, String.valueOf(toggleHashMap.get(PVP)), false)
-                .addField(NIGHT_COM, String.valueOf(toggleHashMap.get(NIGHT_COM)), false)
-                .addField(TWITTER_FEED, String.valueOf(toggleHashMap.get(TWITTER_FEED)), false)
-                .addField(MAINTENANCE, String.valueOf(toggleHashMap.get(MAINTENANCE)), false)
-                .addField(MAINT_PING, String.valueOf(toggleHashMap.get(MAINT_PING)), false)
-                .addField(COUNTDOWN, String.valueOf(toggleHashMap.get(COUNTDOWN)), false)
-                .addField(PING_REPLY, String.valueOf(toggleHashMap.get(PING_REPLY)), false);
+                .addField(DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
+                .addField(PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
+                .addField(NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
+                .addField(TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
+                .addField(MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
+                .addField(MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
+                .addField(COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
+                .addField(PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true)
+                .addField("Permissions Required", security.moderationSecurity.getName(), true);
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 
