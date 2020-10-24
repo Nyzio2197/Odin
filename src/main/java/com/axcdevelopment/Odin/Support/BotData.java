@@ -1,17 +1,19 @@
 package com.axcdevelopment.Odin.Support;
 
+import java.util.Scanner;
+
 /**
  * @author Alan Xiao (axcdevelopment@gmail.com)
  */
 
 public class BotData {
 
-    private static String nextMaintenanceDate;
+    private static String nextMaintenanceDate; // format: MM/dd/yyyy
     private static String nextMaintenanceDuration;
 
-    private static boolean inMaintenance;
+    private static String status;
 
-    private static boolean initialized;
+    private static boolean inMaintenance;
 
     public static String getNextMaintenanceDate() {
         return nextMaintenanceDate;
@@ -37,11 +39,29 @@ public class BotData {
         BotData.inMaintenance = inMaintenance;
     }
 
-    public static boolean isInitialized() {
-        return initialized;
+    public static String getStatus() {
+        return status;
     }
 
-    public static void setInitialized(boolean initialized) {
-        BotData.initialized = initialized;
+    public static void setStatus(String status) {
+        BotData.status = status;
+    }
+
+    public static String asString() {
+        String data = "";
+        data += nextMaintenanceDate + ":::" + nextMaintenanceDuration + "\n";
+        data += inMaintenance + "\n";
+        data += status + "\n";
+        return data;
+    }
+
+    public static void fromString(String data) {
+        Scanner scanner = new Scanner(data);
+        nextMaintenanceDate = data.split(":::")[0];
+        nextMaintenanceDuration = data.split(":::")[1];
+        scanner.nextLine();
+        inMaintenance = Boolean.parseBoolean(scanner.nextLine());
+        status = scanner.nextLine();
+        scanner.close();
     }
 }

@@ -14,7 +14,7 @@ import com.google.gson.stream.JsonReader;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.io.*;
-import java.util.Scanner;
+import java.nio.file.Files;
 
 /**
  * @author Alan Xiao (axcdevelopment@gmail.com)
@@ -35,8 +35,7 @@ public class Dropbox {
     public static void uploadBotInfo() {
         try {
             FileWriter fileWriter = new FileWriter("BotData.txt", false);
-            fileWriter.write(BotData.getNextMaintenanceDate() + ":::" + BotData.getNextMaintenanceDuration() + "\n" +
-                    BotData.isInMaintenance());
+            fileWriter.write(BotData.asString());
             fileWriter.close();
             File file = new File("BotData.txt");
             InputStream in = new FileInputStream(file);
@@ -56,14 +55,8 @@ public class Dropbox {
                 if (metadata.getName().endsWith("BotData.txt")) {
                     OutputStream outputStream = new FileOutputStream(metadata.getName());
                     client.files().downloadBuilder("/v5/" + metadata.getName()).download(outputStream);
-                    Scanner scanner = new Scanner(new File("BotData.txt"));
-                    String[] maintDateTime = scanner.nextLine().split(":::");
-
-                    BotData.setNextMaintenanceDate(maintDateTime[0].equals("null") ? null : maintDateTime[0]);
-                    BotData.setNextMaintenanceDuration(maintDateTime[1].equals("null") ? null : maintDateTime[1]);
-                    BotData.setInMaintenance(Boolean.parseBoolean(scanner.nextLine()));
-                    BotData.setInitialized(true);
-                    scanner.close();
+                    String data = Files.readString(new File("BotData.txt").toPath());
+                    BotData.fromString(data);
                 }
                 if (!metadata.getName().endsWith(".json"))
                     continue;

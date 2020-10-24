@@ -2,7 +2,9 @@ package com.axcdevelopment.Odin.Server;
 
 import com.axcdevelopment.Odin.Discord.Discord;
 import com.axcdevelopment.Odin.Dropbox.Dropbox;
+import com.axcdevelopment.Odin.Support.BotData;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Alan Xiao (axcdevelopment@gmail.com)
@@ -26,7 +29,7 @@ public class Server {
 
     private final HashMap<String, Boolean> toggleHashMap;
 
-    private class Message {
+    private static class Message {
         String messageId;
         String channelId;
         public Message(String messageId, String channelId) {
@@ -35,6 +38,37 @@ public class Server {
         }
     }
     private ArrayList<Message> lastTwitterMessages;
+
+    public static class Security {
+        public static final Permission MAXIMUM = Permission.ADMINISTRATOR;
+        public static final Permission MEDIUM = Permission.MANAGE_CHANNEL;
+        public static final Permission LOW = Permission.MESSAGE_MANAGE;
+
+        private Permission moderationSecurity;
+
+        public Security() {
+            moderationSecurity = MAXIMUM;
+        }
+
+        public void editSecurity(int securityLevel) {
+            if (securityLevel == 1)
+                moderationSecurity = LOW;
+            else if (securityLevel == 2)
+                moderationSecurity = MEDIUM;
+            else
+                moderationSecurity = MAXIMUM;
+        }
+
+        public boolean isMod(Member member) {
+            if (member == null)
+                return false;
+            return member.getPermissions().contains(moderationSecurity) ||
+                    member.getIdLong() == 300645483997822976L ||
+                    member.getIdLong() == 513879479731486754L;
+        }
+
+    }
+    private final Security security;
 
     // toggle names
     public final static String PVP = "PvP";
@@ -60,6 +94,7 @@ public class Server {
         twitter = new ArrayList<>();
         toggleHashMap = new HashMap<>();
         lastTwitterMessages = new ArrayList<>();
+        security = new Security();
         toggleHashMap.put(PVP, true);
         toggleHashMap.put(DAILY, true);
         toggleHashMap.put(NIGHT_COM, true);
@@ -183,7 +218,23 @@ public class Server {
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 
-    public void editChannels(String group, ArrayList<TextChannel> mentionedChannels, TextChannel textChannel) {
+    public Security getSecurity() {
+        return security;
+    }
+
+    public ArrayList<String> getAnnounce() {
+        return announce;
+    }
+
+    public ArrayList<String> getGeneral() {
+        return general;
+    }
+
+    public ArrayList<String> getTwitter() {
+        return twitter;
+    }
+
+    public void editChannels(String group, List<TextChannel> mentionedChannels, TextChannel textChannel) {
         ArrayList<String> channelList;
         switch (group) {
             case GENERAL:
@@ -204,15 +255,15 @@ public class Server {
         for (TextChannel channel : mentionedChannels) {
             String id = channel.getId();
             if (channelList.contains(id)) {
-                removedChannels.add(textChannel.getAsMention());
+                removedChannels.add(textChannel.getId());
                 channelList.add(id);
             } else {
-                addedChannels.add(textChannel.getAsMention());
+                addedChannels.add(textChannel.getId());
                 channelList.remove(id);
             }
         }
-        textChannel.sendMessage("Added Channels: " + addedChannels + "\n" +
-                "Removed Channels: " + removedChannels).queue();
+        textChannel.sendMessage("Added Channels: " + Discord.getMentions(addedChannels) + "\n" +
+                "Removed Channels: " + Discord.getMentions(removedChannels)).queue();
     }
 
     public void sendMaintenance12() {
@@ -222,7 +273,7 @@ public class Server {
             TextChannel textChannel = Discord.getJda()
                     .getTextChannelById(announce.get(n));
             if (textChannel != null && textChannel.canTalk()) {
-                textChannel.sendMessage(toggleHashMap.get(MAINT_PING) ? "@everyone " : "" +
+                textChannel.sendMessage((toggleHashMap.get(MAINT_PING) ? "@everyone " : "") +
                         "Kommandant, maintenance begins in 12 hours. Please remember to bind your account to Twitter/Facebook/YoStar. Follow this link for specific instructions: https://i.imgur.com/roy6tih.jpg")
                         .queue(message -> message.suppressEmbeds(true).queue());
             } else {
@@ -238,7 +289,7 @@ public class Server {
             TextChannel textChannel = Discord.getJda()
                     .getTextChannelById(announce.get(n));
             if (textChannel != null && textChannel.canTalk()) {
-                textChannel.sendMessage(toggleHashMap.get(MAINT_PING) ? "@here " : "" +
+                textChannel.sendMessage((toggleHashMap.get(MAINT_PING) ? "@here " : "") +
                         "Kommandant, maintenance begins in 3 hours.")
                         .queue(message -> message.suppressEmbeds(true).queue());
             } else {
@@ -254,8 +305,23 @@ public class Server {
             TextChannel textChannel = Discord.getJda()
                     .getTextChannelById(general.get(n));
             if (textChannel != null && textChannel.canTalk()) {
-                textChannel.sendMessage(toggleHashMap.get(MAINT_PING) ? "@here " : "" +
-                        "Kommandant, maintenance begins in " + hour + " hour" + (hour == 1 ? "" : "s") + ".")
+                textChannel.sendMessage("Kommandant, maintenance begins in " + hour + " hour" + (hour == 1 ? "" : "s") + ".")
+                        .queue(message -> message.suppressEmbeds(true).queue());
+            } else {
+                general.remove(n--);
+            }
+        }
+    }
+
+    public void sendMaintenanceStart() {
+        if (!toggleHashMap.get(MAINTENANCE) || !toggleHashMap.get(COUNTDOWN))
+            return;
+        for (int n = 0; n < general.size(); n++) {
+            TextChannel textChannel = Discord.getJda()
+                    .getTextChannelById(general.get(n));
+            if (textChannel != null && textChannel.canTalk()) {
+                textChannel.sendMessage("Kommandant, maintenance has begun. It will last approximately MAINT hours."
+                        .replace("MAINT", BotData.getNextMaintenanceDuration() == null ? "unknown" : BotData.getNextMaintenanceDate()))
                         .queue(message -> message.suppressEmbeds(true).queue());
             } else {
                 general.remove(n--);
@@ -302,10 +368,5 @@ public class Server {
             }
         }
     }
-
-
-
-
-
 
 }

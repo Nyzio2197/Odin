@@ -1,9 +1,10 @@
 package com.axcdevelopment.Odin.Discord;
 
+import com.axcdevelopment.Odin.DiscordListeners.GuildJoinListener;
 import com.axcdevelopment.Odin.Dropbox.Dropbox;
-import com.axcdevelopment.Odin.MessageListeners.DeveloperListener;
-import com.axcdevelopment.Odin.MessageListeners.MemberListener;
-import com.axcdevelopment.Odin.MessageListeners.ModeratorListener;
+import com.axcdevelopment.Odin.DiscordListeners.DeveloperListener;
+import com.axcdevelopment.Odin.DiscordListeners.MemberListener;
+import com.axcdevelopment.Odin.DiscordListeners.ModeratorListener;
 import com.axcdevelopment.Odin.Server.Server;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -27,6 +28,7 @@ public class Discord {
     public static final MemberListener MEMBER_LISTENER = new MemberListener();
     public static final ModeratorListener MODERATOR_LISTENER = new ModeratorListener();
     public static final DeveloperListener DEVELOPER_LISTENER = new DeveloperListener();
+    public static final GuildJoinListener GUILD_JOIN_LISTENER = new GuildJoinListener();
 
     public static void connect() throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
@@ -48,13 +50,15 @@ public class Discord {
             jda.getPresence().setActivity(Activity.playing("cycling"));
             jda.removeEventListener(MEMBER_LISTENER,
                     MODERATOR_LISTENER,
-                    DEVELOPER_LISTENER);
+                    DEVELOPER_LISTENER,
+                    GUILD_JOIN_LISTENER);
             servers = new ArrayList<>();
             Dropbox.downloadDropboxInfo();
             Thread.sleep(10 * 6000);
             jda.addEventListener(MEMBER_LISTENER,
                     MODERATOR_LISTENER,
-                    DEVELOPER_LISTENER);
+                    DEVELOPER_LISTENER,
+                    GUILD_JOIN_LISTENER);
             Discord.getJda().getPresence().setActivity(Activity.listening("o.help"));
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -66,7 +70,7 @@ public class Discord {
         for (String id : ids) {
             TextChannel textChannel = jda.getTextChannelById(id);
             if (textChannel != null) {
-                mentions.add(textChannel.getAsMention());
+                mentions.add(textChannel.getAsMention() + (textChannel.canTalk() ? "" : " I can't talk here!"));
             }
         }
         return mentions;

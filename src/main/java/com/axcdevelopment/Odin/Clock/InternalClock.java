@@ -15,7 +15,7 @@ public class InternalClock {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HHmmss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HHmmss");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 for (ClockListener clockListener : listeners) {
                     if (clockListener.check(dateFormat.format(new Date()))) {
@@ -31,5 +31,7 @@ public class InternalClock {
     public static void attachListener(ClockListener listener) {
         listeners.add(listener);
     }
+
+
 
 }
