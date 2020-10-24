@@ -6,6 +6,7 @@ import com.axcdevelopment.Odin.DiscordListeners.DeveloperListener;
 import com.axcdevelopment.Odin.DiscordListeners.MemberListener;
 import com.axcdevelopment.Odin.DiscordListeners.ModeratorListener;
 import com.axcdevelopment.Odin.Server.Server;
+import com.axcdevelopment.Odin.Support.BotData;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -59,7 +60,7 @@ public class Discord {
                     MODERATOR_LISTENER,
                     DEVELOPER_LISTENER,
                     GUILD_JOIN_LISTENER);
-            Discord.getJda().getPresence().setActivity(Activity.listening("o.help"));
+            Discord.getJda().getPresence().setActivity(Activity.playing(BotData.getStatus()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

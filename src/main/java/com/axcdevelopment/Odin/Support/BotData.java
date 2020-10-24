@@ -57,8 +57,8 @@ public class BotData {
 
     public static void fromString(String data) {
         Scanner scanner = new Scanner(data);
-        nextMaintenanceDate = data.split(":::")[0];
-        nextMaintenanceDuration = data.split(":::")[1];
+        nextMaintenanceDate = data.split(":::")[0].equals("null") ? null : data.split(":")[0];
+        nextMaintenanceDuration = data.split(":::")[1].equals("null") ? null : data.split(":")[1];
         scanner.nextLine();
         inMaintenance = Boolean.parseBoolean(scanner.nextLine());
         status = scanner.nextLine();

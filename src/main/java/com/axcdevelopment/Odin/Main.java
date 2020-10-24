@@ -34,7 +34,7 @@ public class Main {
                 Discord.MODERATOR_LISTENER,
                 Discord.DEVELOPER_LISTENER,
                 Discord.GUILD_JOIN_LISTENER);
-        Discord.getJda().getPresence().setActivity(Activity.listening("o.help"));
+        Discord.getJda().getPresence().setActivity(Activity.playing(BotData.getStatus()));
     }
 
     private static void attachClockListeners() {

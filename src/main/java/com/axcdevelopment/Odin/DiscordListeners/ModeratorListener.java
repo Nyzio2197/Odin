@@ -23,6 +23,14 @@ public class ModeratorListener extends ListenerAdapter {
             return;
         String command = Listener.ridPrefix(message.getContentRaw());
         Server server = Discord.getServer(message.getGuild());
+        if (server == null) {
+            try {
+                Thread.sleep(10);
+                server = Discord.getServer(message.getGuild());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         assert server != null;
         if (command.equals("toggles")) {
             server.editToggles(message.getTextChannel());

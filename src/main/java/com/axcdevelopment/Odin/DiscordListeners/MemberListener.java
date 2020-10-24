@@ -27,9 +27,12 @@ public class MemberListener extends ListenerAdapter {
         if (!Listener.isDirected(message) || !message.getTextChannel().canTalk())
             return;
         String command = Listener.ridPrefix(message.getContentRaw());
+        Server server = Discord.getServer(event.getGuild());
+        if (server == null) {
+            server = new Server(message.getGuild());
+            Discord.getServers().add(server);
+        }
         if (command.equals("help")) {
-            Server server = Discord.getServer(event.getGuild());
-            assert server != null;
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.addField("o.time [EN/JP]", "Get the current time of [EN/JP] servers", false)
                     .addField("o.invite", "Invite link for Odin Support Server, can get bot invite from there along with other info.", false)
