@@ -32,6 +32,7 @@ public class Discord {
     public static final GuildJoinListener GUILD_JOIN_LISTENER = new GuildJoinListener();
 
     public static void connect() throws LoginException, InterruptedException {
+        servers = new ArrayList<>();
         JDABuilder builder = JDABuilder.createDefault(System.getenv("JDAToken"));
         builder.setActivity(Activity.playing("cycling"));
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);

@@ -7,6 +7,7 @@ import com.axcdevelopment.Odin.Dropbox.Dropbox;
 import com.axcdevelopment.Odin.Server.Server;
 import com.axcdevelopment.Odin.Support.BotData;
 import com.axcdevelopment.Odin.Twitter.TwitterConnector;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
@@ -35,6 +36,7 @@ public class Main {
                 Discord.DEVELOPER_LISTENER,
                 Discord.GUILD_JOIN_LISTENER);
         Discord.getJda().getPresence().setActivity(Activity.playing(BotData.getStatus()));
+        Discord.getJda().getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
     private static void attachClockListeners() {
