@@ -1,6 +1,7 @@
 package com.axcdevelopment.Odin.DiscordListeners;
 
 import com.axcdevelopment.Odin.Discord.Discord;
+import com.axcdevelopment.Odin.Dropbox.Dropbox;
 import com.axcdevelopment.Odin.Server.Server;
 import com.axcdevelopment.Odin.Support.BotData;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,7 +25,7 @@ public class DeveloperListener extends ListenerAdapter {
         if (!Listener.isDirected(event.getMessage()))
             return;
         TextChannel responseChannel = event.getChannel();
-        if (responseChannel.canTalk()) {
+        if (!responseChannel.canTalk()) {
             System.out.println("Permissions denied in: " + event.getGuild().getName() + ", channel: " + event.getChannel().getName());
             return;
         }
@@ -41,11 +42,10 @@ public class DeveloperListener extends ListenerAdapter {
         } else if (command.equals("status")) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle("Bot Status")
-                    .setThumbnail(Discord.getJda().getSelfUser().getAvatarUrl())
                     .setColor(Color.CYAN)
                     .addField("In Maintenance", "" + BotData.isInMaintenance(), false)
-                    .addField("Next Maintenance Date", BotData.getNextMaintenanceDate(), false)
-                    .addField("Next Maintenance Duration", BotData.getNextMaintenanceDuration(), false);
+                    .addField("Next Maintenance Date", "" + BotData.getNextMaintenanceDate(), false)
+                    .addField("Next Maintenance Duration", "" + BotData.getNextMaintenanceDuration(), false);
             responseChannel.sendMessage(embedBuilder.build()).queue();
         } else if (command.equals("online")) {
             String status = messageContent.split(" ")[1];
@@ -58,8 +58,11 @@ public class DeveloperListener extends ListenerAdapter {
             else if (status.contains("off"))
                 Discord.getJda().getPresence().setStatus(OnlineStatus.OFFLINE);
         } else if (command.equals("playing")) {
-            BotData.setStatus(messageContent.split(" ")[1]);
+            BotData.setStatus(messageContent.substring(messageContent.indexOf(" ") + 1));
+            Dropbox.uploadBotInfo();
             Discord.getJda().getPresence().setActivity(Activity.playing(BotData.getStatus()));
+        } else if (command.equals("print")) {
+            System.out.println(event.getMessage().getContentRaw());
         }
     }
 }

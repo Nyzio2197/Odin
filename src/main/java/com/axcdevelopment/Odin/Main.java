@@ -25,7 +25,7 @@ public class Main {
     public static void main(String[] args) throws LoginException, InterruptedException {
         Discord.connect();
         Dropbox.sync();
-        TwitterConnector.connect();
+        // TwitterConnector.connect();
         InternalClock.start();
 
         attachClockListeners();
@@ -90,7 +90,7 @@ public class Main {
             @Override
             protected void doAction() {
                 for (Server server : Discord.getServers()) {
-                    server.sendMessage(Server.DAILY, "Kommandant, it is now 11:45 PM.PvP refreshes in 15 minutes.");
+                    server.sendMessage(Server.DAILY, "Kommandant, it is now 11:45 PM. PvP refreshes in 15 minutes.");
                 }
             }
         });

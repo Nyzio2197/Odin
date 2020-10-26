@@ -1,12 +1,9 @@
 package com.axcdevelopment.Odin.DiscordListeners;
 
-import com.axcdevelopment.Odin.Clock.InternalClock;
 import com.axcdevelopment.Odin.Discord.Discord;
 import com.axcdevelopment.Odin.Server.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +42,8 @@ public class MemberListener extends ListenerAdapter {
                         .addField("o.configs", "Get the server configurations for Odin", false);
             }
             event.getChannel().sendMessage(embedBuilder.build()).queue();
-        } else if (command.equals("time")) {
+            return;
+        } else if (command.startsWith("time")) {
             TextChannel textChannel = event.getChannel();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
             Date currentTime = new Date();
@@ -59,12 +57,41 @@ public class MemberListener extends ListenerAdapter {
                 textChannel.sendMessage(timeMessage.replace("REGION", "EN")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             }
+            return;
         } else if (command.equals("invite")) {
             event.getAuthor().openPrivateChannel().queue(privateChannel ->
                     privateChannel.sendMessage("Join the support server!\nhttps://discord.gg/SGtY8am").queue());
+            return;
         } else if (command.equals("website")) {
             event.getAuthor().openPrivateChannel().queue(privateChannel ->
-                    privateChannel.sendMessage("Join the support server!\nhttps://alandaboi.github.io/Odin").queue());
+                    privateChannel.sendMessage("Check out the website!\nhttps://alandaboi.github.io/Odin").queue());
+            return;
+        }
+        if (message.getMentionedUsers().contains(Discord.getJda().getSelfUser())) {
+            String reply = message.getAuthor().getAsMention() + " ";
+            if (!server.getSecurity().isMod(message.getMember())) {
+                if (!server.getToggleHashMap().get(Server.PING_REPLY))
+                    return;
+                String[] possibleReplies = new String[]{"I am not even disappointed, I simply wonder how someone as lousy as you became a commander in the first place.",
+                        "You lot already have no avenues to escape!",
+                        "Flee while you still can.",
+                        "You have missions. Leaving them unfinished would be a foolish choice.",
+                        "As time passes, you learn how futile your concerns are.",
+                        "Do not waste my time \"Commander\".",
+                        "I do not talk to insignificant people.",
+                        "I don't even know who you are.",
+                        "Are you sure you're a fully licensed commander?"};
+                reply += possibleReplies[(int) (Math.random() * possibleReplies.length)];
+            } else {
+                reply += ":heart::heart::heart:\n";
+                String[] possibleReplies = new String[]{"I do not approve of being reliant on someone. Excessive intimacy is a hindrance in war, clouding one's judgment and forming obstacles to one's plans... Ah, I can't believe what I'm saying...",
+                        "Understood. I shall continue to provide assistance for you, whenever– Hey, wait a minute... Th-this isn't what you said would happen! ...No, that's not to say I oppose this! I just wasn't... mentally prepared... What I'm getting at is: give me a moment to think!",
+                        "We make a fine pair, both in the office and the war room. But that can backfire, as I may end up becoming reliant on you...",
+                        "Are you the one who summoned me here? I am Odin. I hereby take up post as your tactician.",
+                        "Y-you will hear from me at the court martial!"};
+                reply += possibleReplies[(int) (Math.random() * possibleReplies.length)];
+            }
+            message.getTextChannel().sendMessage(reply).queue();
         }
     }
 }

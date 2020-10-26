@@ -1,6 +1,7 @@
 package com.axcdevelopment.Odin.DiscordListeners;
 
 import com.axcdevelopment.Odin.Discord.Discord;
+import com.axcdevelopment.Odin.Dropbox.Dropbox;
 import com.axcdevelopment.Odin.Server.Server;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -71,5 +72,6 @@ public class ModeratorListener extends ListenerAdapter {
         } else if (command.equals("configs")) {
             server.getConfigs(message.getTextChannel());
         }
+        Dropbox.uploadServerInfo(server);
     }
 }

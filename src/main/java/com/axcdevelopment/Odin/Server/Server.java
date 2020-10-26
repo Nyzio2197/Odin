@@ -106,19 +106,7 @@ public class Server {
         toggleHashMap.put(TWITTER_FEED, false);
 
         toggleHashMap.put(PING_REPLY, false);
-        Thread thread = new Thread(() -> {
-            try {
-                Thread.sleep(10 * 60 * 1000);
-                Dropbox.uploadServerInfo(this);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
-    }
-
-    public String getName() {
-        return name;
+        Dropbox.uploadServerInfo(this);
     }
 
     public String getGuildId() {
@@ -127,76 +115,89 @@ public class Server {
 
     public void editToggles(TextChannel textChannel) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        Activity.Emoji emoji1 = new Activity.Emoji("U+31");
-        Activity.Emoji emoji2 = new Activity.Emoji("U+32");
-        Activity.Emoji emoji3 = new Activity.Emoji("U+33");
-        Activity.Emoji emoji4 = new Activity.Emoji("U+34");
-        Activity.Emoji emoji5 = new Activity.Emoji("U+35");
-        Activity.Emoji emoji6 = new Activity.Emoji("U+36");
-        Activity.Emoji emoji7 = new Activity.Emoji("U+37");
-        Activity.Emoji emoji8 = new Activity.Emoji("U+38");
         embedBuilder.setTitle(name)
                 .setThumbnail(textChannel.getGuild().getIconUrl())
                 .setColor(Color.CYAN)
-                .addField(emoji1 + " " + DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
-                .addField(emoji2 + " " + PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
-                .addField(emoji3 + " " + NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
-                .addField(emoji4 + " " + TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
-                .addField(emoji5 + " " + MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
-                .addField(emoji6 + " " + MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
-                .addField(emoji7 + " " + COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
-                .addField(emoji8 + " " + PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
+                .addField("1️⃣ " + DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
+                .addField("2️⃣ " + PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
+                .addField("3️⃣ " + NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
+                .addField("4️⃣ " + TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
+                .addField("5️⃣ " + MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
+                .addField("6️⃣ " + MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
+                .addField("7️⃣ " + COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
+                .addField("8️⃣ " + PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
         textChannel.sendMessage(embedBuilder.build()).queue(message -> {
-            message.addReaction(emoji1.getAsCodepoints()).queue();
-            message.addReaction(emoji2.getAsCodepoints()).queue();
-            message.addReaction(emoji3.getAsCodepoints()).queue();
-            message.addReaction(emoji4.getAsCodepoints()).queue();
-            message.addReaction(emoji5.getAsCodepoints()).queue();
-            message.addReaction(emoji6.getAsCodepoints()).queue();
-            message.addReaction(emoji7.getAsCodepoints()).queue();
-            message.addReaction(emoji8.getAsCodepoints()).queue();
+            message.addReaction("1️⃣").queue();
+            message.addReaction("2️⃣").queue();
+            message.addReaction("3️⃣").queue();
+            message.addReaction("4️⃣").queue();
+            message.addReaction("5️⃣").queue();
+            message.addReaction("6️⃣").queue();
+            message.addReaction("7️⃣").queue();
+            message.addReaction("8️⃣").queue();
             message.getJDA().addEventListener(new ListenerAdapter() {@Override
-                public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-                    onReaction(event.getReaction().getReactionEmote().getAsCodepoints());
-                }@Override
-                public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
-                    onReaction(event.getReaction().getReactionEmote().getAsCodepoints());
-                }
+            public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+                if (!security.isMod(event.getMember()) || !event.getMessageId().equals(message.getId()))
+                    return;
+                onReaction(event.getReactionEmote().getAsReactionCode());
+            }@Override
+            public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+                if (!security.isMod(event.getMember()) || !event.getMessageId().equals(message.getId()))
+                    return;
+                onReaction(event.getReactionEmote().getAsReactionCode());
+            }
 
                 public void onReaction(String unicode) {
-                    if (unicode.equals(emoji1.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji2.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji3.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji4.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji5.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji6.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji7.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else if (unicode.equals(emoji8.getAsCodepoints())) {
-                        toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
-                    } else {
-                        return;
+                    switch (unicode) {
+                        case "1️⃣":
+                            toggleHashMap.replace(DAILY, !toggleHashMap.get(DAILY));
+                            break;
+                        case "2️⃣":
+                            toggleHashMap.replace(PVP, !toggleHashMap.get(PVP));
+                            break;
+                        case "3️⃣":
+                            toggleHashMap.replace(NIGHT_COM, !toggleHashMap.get(NIGHT_COM));
+                            break;
+                        case "4️⃣":
+                            toggleHashMap.replace(TWITTER_FEED, !toggleHashMap.get(TWITTER_FEED));
+                            break;
+                        case "5️⃣":
+                            toggleHashMap.replace(MAINTENANCE, !toggleHashMap.get(MAINTENANCE));
+                            break;
+                        case "6️⃣":
+                            toggleHashMap.replace(MAINT_PING, !toggleHashMap.get(MAINT_PING));
+                            break;
+                        case "7️⃣":
+                            toggleHashMap.replace(COUNTDOWN, !toggleHashMap.get(COUNTDOWN));
+                            break;
+                        case "8️⃣":
+                            toggleHashMap.replace(PING_REPLY, !toggleHashMap.get(PING_REPLY));
+                            break;
+                        default:
+                            System.out.println("Wrong emote added by");
+                            return;
                     }
+                    embedBuilder.clear();
                     embedBuilder.setTitle(name)
                             .setThumbnail(textChannel.getGuild().getIconUrl())
                             .setColor(Color.CYAN)
-                            .addField(DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
-                            .addField(PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
-                            .addField(NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
-                            .addField(TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
-                            .addField(MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
-                            .addField(MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
-                            .addField(COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
-                            .addField(PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
+                            .addField("1️⃣ " + DAILY, toggleHashMap.get(DAILY) ? "ON" : "OFF", true)
+                            .addField("2️⃣ " + PVP, toggleHashMap.get(PVP) ? "ON" : "OFF", true)
+                            .addField("3️⃣ " + NIGHT_COM, toggleHashMap.get(NIGHT_COM) ? "ON" : "OFF", true)
+                            .addField("4️⃣ " + TWITTER_FEED, toggleHashMap.get(TWITTER_FEED) ? "ON" : "OFF", true)
+                            .addField("5️⃣ " + MAINTENANCE, toggleHashMap.get(MAINTENANCE) ? "ON" : "OFF", true)
+                            .addField("6️⃣ " + MAINT_PING, toggleHashMap.get(MAINT_PING) ? "ON" : "OFF", true)
+                            .addField("7️⃣ " + COUNTDOWN, toggleHashMap.get(COUNTDOWN) ? "ON" : "OFF", true)
+                            .addField("8️⃣ " + PING_REPLY, toggleHashMap.get(PING_REPLY) ? "ON" : "OFF", true);
                     message.editMessage(embedBuilder.build()).queue();
                 }
             });
+            try {
+                Thread.sleep(60 * 1000);
+                message.delete().queue();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -253,7 +254,7 @@ public class Server {
                 channelList = twitter;
                 break;
             default:
-                return;
+                throw new IllegalStateException("Unexpected value: " + group);
         }
         ArrayList<String>
                 addedChannels = new ArrayList<>(),
@@ -262,10 +263,10 @@ public class Server {
             String id = channel.getId();
             if (channelList.contains(id)) {
                 removedChannels.add(textChannel.getId());
-                channelList.add(id);
+                channelList.remove(id);
             } else {
                 addedChannels.add(textChannel.getId());
-                channelList.remove(id);
+                channelList.add(id);
             }
         }
         textChannel.sendMessage("Added Channels: " + Discord.getMentions(addedChannels) + "\n" +
@@ -347,6 +348,10 @@ public class Server {
                 general.remove(n--);
             }
         }
+    }
+
+    public HashMap<String, Boolean> getToggleHashMap() {
+        return toggleHashMap;
     }
 
     public void sendTwitterStatus(long statusId) {

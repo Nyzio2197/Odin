@@ -13,9 +13,11 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alan Xiao (axcdevelopment@gmail.com)
@@ -43,12 +45,13 @@ public class Discord {
         return jda;
     }
 
-    public static ArrayList<Server> getServers() {
+    public static List<Server> getServers() {
         return servers;
     }
 
     public static void resetServers() {
         try {
+            jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
             jda.getPresence().setActivity(Activity.playing("cycling"));
             jda.removeEventListener(MEMBER_LISTENER,
                     MODERATOR_LISTENER,
@@ -61,13 +64,14 @@ public class Discord {
                     MODERATOR_LISTENER,
                     DEVELOPER_LISTENER,
                     GUILD_JOIN_LISTENER);
-            Discord.getJda().getPresence().setActivity(Activity.playing(BotData.getStatus()));
+            jda.getPresence().setActivity(Activity.playing(BotData.getStatus()));
+            jda.getPresence().setStatus(OnlineStatus.ONLINE);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<String> getMentions(ArrayList<String> ids) {
+    public static List<String> getMentions(List<String> ids) {
         ArrayList<String> mentions = new ArrayList<>();
         for (String id : ids) {
             TextChannel textChannel = jda.getTextChannelById(id);

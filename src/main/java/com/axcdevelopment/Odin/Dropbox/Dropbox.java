@@ -10,6 +10,7 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.files.WriteMode;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import net.dv8tion.jda.api.entities.Guild;
 
@@ -85,7 +86,7 @@ public class Dropbox {
                 return;
             String filename = server.getGuildId() + ".json";
             FileWriter fileWriter = new FileWriter(filename, false);
-            fileWriter.write(new Gson().toJson(server));
+            fileWriter.write(new GsonBuilder().setPrettyPrinting().create().toJson(server));
             fileWriter.close();
             File file = new File(filename);
             InputStream in = new FileInputStream(file);
