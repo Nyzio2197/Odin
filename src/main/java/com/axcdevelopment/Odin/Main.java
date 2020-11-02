@@ -25,7 +25,7 @@ public class Main {
     public static void main(String[] args) throws LoginException, InterruptedException {
         Discord.connect();
         Dropbox.sync();
-        // TwitterConnector.connect();
+        TwitterConnector.connect();
         InternalClock.start();
 
         attachClockListeners();
@@ -144,11 +144,17 @@ public class Main {
                     }
                 });
             }
+            // maint -.1
+            InternalClock.attachListener(new ClockListener(standard.format(new Date(finalMaintenanceDate.getTime() - 1000))) {
+                @Override
+                protected void doAction() {
+                    BotData.setInMaintenance(true);
+                }
+            });
             // maint -0
             InternalClock.attachListener(new ClockListener(standard.format(new Date(finalMaintenanceDate.getTime()))) {
                 @Override
                 protected void doAction() {
-                    BotData.setInMaintenance(true);
                     for (Server server : Discord.getServers()) {
                         server.sendMaintenanceStart();
                     }

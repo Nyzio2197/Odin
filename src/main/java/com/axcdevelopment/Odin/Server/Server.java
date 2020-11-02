@@ -306,14 +306,15 @@ public class Server {
     }
 
     public void sendMaintenanceN(int hour) {
-        if (!toggleHashMap.get(MAINTENANCE) || !toggleHashMap.get(COUNTDOWN))
+        if (!toggleHashMap.get(MAINTENANCE))
+            return;
+        if (!toggleHashMap.get(COUNTDOWN))
             return;
         for (int n = 0; n < general.size(); n++) {
             TextChannel textChannel = Discord.getJda()
                     .getTextChannelById(general.get(n));
             if (textChannel != null && textChannel.canTalk()) {
-                textChannel.sendMessage("Kommandant, maintenance begins in " + hour + " hour" + (hour == 1 ? "" : "s") + ".")
-                        .queue(message -> message.suppressEmbeds(true).queue());
+                textChannel.sendMessage("Kommandant, maintenance begins in " + hour + " hour" + (hour == 1 ? "" : "s") + ".").queue();
             } else {
                 general.remove(n--);
             }
@@ -328,7 +329,7 @@ public class Server {
                     .getTextChannelById(general.get(n));
             if (textChannel != null && textChannel.canTalk()) {
                 textChannel.sendMessage("Kommandant, maintenance has begun. It will last approximately MAINT hours."
-                        .replace("MAINT", BotData.getNextMaintenanceDuration() == null ? "unknown" : BotData.getNextMaintenanceDate()))
+                        .replace("MAINT", BotData.getNextMaintenanceDuration() == null ? "unknown" : BotData.getNextMaintenanceDuration()))
                         .queue(message -> message.suppressEmbeds(true).queue());
             } else {
                 general.remove(n--);
