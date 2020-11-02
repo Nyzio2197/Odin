@@ -81,25 +81,22 @@ public class MemberEventListener extends OdinMessageEventListener {
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
                     now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
-                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "JP")
-                        .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
+                        .replace("HHHH", simpleDateFormat.format(now))).queue();
             } else if (command.toLowerCase().contains("cn")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Guangzhou"));
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
                     now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
-                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "CN")
-                        .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
+                        .replace("HHHH", simpleDateFormat.format(now))).queue();
             } else {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
                     now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
-                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "EN")
-                        .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
+                        .replace("HHHH", simpleDateFormat.format(now))).queue();
             }
         }
     }
