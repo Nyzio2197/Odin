@@ -73,19 +73,31 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage("https://discord.gg/SGtY8am").queue();
         }
         else if (command.startsWith("time")) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
-            Date currentTime = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmmss");
+            Date now = new Date();
             String timeMessage = "Current REGION server time HHHH";
             if (command.toLowerCase().contains("jp")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+                if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
+                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                }
+                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "JP")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             } else if (command.toLowerCase().contains("cn")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Guangzhou"));
+                if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
+                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                }
+                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "CN")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             } else {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+                if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
+                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                }
+                String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "EN")
                         .replace("HHHH", simpleDateFormat.format(currentTime))).queue();
             }

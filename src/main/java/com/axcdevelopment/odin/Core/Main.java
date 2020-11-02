@@ -44,8 +44,13 @@ public class Main {
                     return;
                 }
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-                String currentTime = dateFormat.format(new Date());
+                TimeZone timeZone = TimeZone.getTimeZone("America/Los_Angeles");
+                dateFormat.setTimeZone(timeZone);
+                Date now = new Date();
+                if (timeZone.inDaylightTime(now)) {
+                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                }
+                String currentTime = dateFormat.format(now);
                 switch (currentTime) {
                     case "000000":
                         sendMessageToChannels("Kommandant, it is now 12:00 AM server side.\nDaily missions have reset.", Server.GENERAL, Server.DAILY);
