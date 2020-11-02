@@ -79,7 +79,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             if (command.toLowerCase().contains("jp")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
-                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                    now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
                 String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "JP")
@@ -87,7 +87,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             } else if (command.toLowerCase().contains("cn")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Guangzhou"));
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
-                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                    now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
                 String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "CN")
@@ -95,7 +95,7 @@ public class MemberEventListener extends OdinMessageEventListener {
             } else {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 if (simpleDateFormat.getTimeZone().inDaylightTime(now)) {
-                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                    now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
                 String currentTime = simpleDateFormat.format(now);
                 textChannel.sendMessage(timeMessage.replace("REGION", "EN")

@@ -48,7 +48,7 @@ public class Main {
                 dateFormat.setTimeZone(timeZone);
                 Date now = new Date();
                 if (timeZone.inDaylightTime(now)) {
-                    now =  new Date(now.getTime() - 60 * 60 * 1000);
+                    now =  new Date(now.getTime() + 60 * 60 * 1000);
                 }
                 String currentTime = dateFormat.format(now);
                 switch (currentTime) {
