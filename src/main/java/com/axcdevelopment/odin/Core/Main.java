@@ -46,10 +46,7 @@ public class Main {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss");
                 TimeZone timeZone = TimeZone.getTimeZone("America/Los_Angeles");
                 dateFormat.setTimeZone(timeZone);
-                Date now = new Date();
-                if (timeZone.inDaylightTime(now)) {
-                    now =  new Date(now.getTime() + 60 * 60 * 1000);
-                }
+                Date now = new Date(new Date().getTime() + dateFormat.getTimeZone().getDSTSavings());
                 String currentTime = dateFormat.format(now);
                 switch (currentTime) {
                     case "000000":
@@ -93,7 +90,7 @@ public class Main {
                     return;
                 SimpleDateFormat standard = new SimpleDateFormat("MM/dd/yyyy HHmmss");
                 standard.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-                String now = standard.format(new Date());
+                String now = standard.format(new Date(new Date().getTime() + standard.getTimeZone().getDSTSavings()));
                 if (now.equals(standard.format(new Date(finalMaintenanceDate.getTime() - 12 * 60 * 60 * 1000)))) {
                     sendMessageToChannels("@everyone Kommandant, be advised :\nAll servers will go into maintenance in 12 hours from now. Please do not forget to bind your account to Twitter/FB/YoStar in order to prevent the loss of your progress.\n\n", Server.ANNOUNCE, Server.MAINTENANCE);
                     sendMessageToChannels("https://i.imgur.com/roy6tih.jpg", Server.ANNOUNCE, Server.MAINTENANCE);

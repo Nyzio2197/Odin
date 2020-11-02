@@ -73,8 +73,8 @@ public class MemberEventListener extends OdinMessageEventListener {
             textChannel.sendMessage("https://discord.gg/SGtY8am").queue();
         }
         else if (command.startsWith("time")) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmmss");
-            Date now = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");
+            Date now;
             String timeMessage = "Current REGION server time HHHH";
             if (command.toLowerCase().contains("jp")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
