@@ -46,7 +46,7 @@ public class MemberListener extends ListenerAdapter {
         } else if (command.startsWith("time")) {
             TextChannel textChannel = event.getChannel();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
-            Date currentTime = new Date();
+            Date currentTime = new Date(new Date().getTime() + simpleDateFormat.getTimeZone().getDSTSavings());
             String timeMessage = "Current REGION server time HHHH";
             if (command.toLowerCase().contains("jp")) {
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));

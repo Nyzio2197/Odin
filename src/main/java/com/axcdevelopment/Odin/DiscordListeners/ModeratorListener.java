@@ -71,7 +71,7 @@ public class ModeratorListener extends ListenerAdapter {
             }
         } else if (command.equals("configs")) {
             server.getConfigs(message.getTextChannel());
-        }
+        } 
         Dropbox.uploadServerInfo(server);
     }
 }

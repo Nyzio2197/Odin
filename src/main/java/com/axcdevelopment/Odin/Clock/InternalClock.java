@@ -18,7 +18,7 @@ public class InternalClock {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HHmmss");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
                 for (ClockListener clockListener : listeners) {
-                    if (clockListener.check(dateFormat.format(new Date()))) {
+                    if (clockListener.check(dateFormat.format(new Date(new Date().getTime() + dateFormat.getTimeZone().getDSTSavings())))) {
                         clockListener.doAction();
                     }
                 }
