@@ -338,6 +338,8 @@ public class Server {
     }
 
     public void sendMessage(String toggle, String message) {
+        if (BotData.isInMaintenance())
+            return;
         if (!toggleHashMap.get(toggle))
             return;
         for (int n = 0; n < general.size(); n++) {

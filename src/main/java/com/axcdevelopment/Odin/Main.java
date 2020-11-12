@@ -133,7 +133,9 @@ public class Main {
                 }
             });
             // maint -n
-            for (int n = 11; n > 0 && n != 3; n--) {
+            for (int n = 11; n > 0; n--) {
+                if (n == 3)
+                    continue;
                 int finalN = n;
                 InternalClock.attachListener(new ClockListener(standard.format(new Date(finalMaintenanceDate.getTime() - n * 60 * 60 * 1000))) {
                     @Override
