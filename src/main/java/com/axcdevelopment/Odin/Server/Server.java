@@ -262,10 +262,10 @@ public class Server {
         for (TextChannel channel : mentionedChannels) {
             String id = channel.getId();
             if (channelList.contains(id)) {
-                removedChannels.add(textChannel.getId());
+                removedChannels.add(channel.getId());
                 channelList.remove(id);
             } else {
-                addedChannels.add(textChannel.getId());
+                addedChannels.add(channel.getId());
                 channelList.add(id);
             }
         }
