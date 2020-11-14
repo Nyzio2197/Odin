@@ -43,19 +43,22 @@ public class ModeratorListener extends ListenerAdapter {
                 } else {
                     server.editChannels(Server.GENERAL, mentionedChannels, message.getTextChannel());
                 }
-            } else if (command.contains("announce")) {
+            }
+            if (command.contains("announce")) {
                 if (mentionedChannels.isEmpty()) {
                     message.getTextChannel().sendMessage("Current announcement channels: " + Discord.getMentions(server.getAnnounce())).queue();
                 } else {
                     server.editChannels(Server.ANNOUNCE, mentionedChannels, message.getTextChannel());
                 }
-            } else if (command.contains("twitter")) {
+            }
+            if (command.contains("twitter")) {
                 if (mentionedChannels.isEmpty()) {
                     message.getTextChannel().sendMessage("Current twitter channels: " + Discord.getMentions(server.getTwitter())).queue();
                 } else {
                     server.editChannels(Server.TWITTER, mentionedChannels, message.getTextChannel());
                 }
-            } else {
+            }
+            if (!(command.contains("general") || command.contains("announce") || command.contains("twitter"))){
                 event.getChannel().sendMessage("To add or remove channel to general, call **o.channel general #channel**.\nSimilarly call **o.channel twitter** and **o.channel announce** for twitter and announcement respectively.").queue();
             }
         } else if (command.startsWith("sec")) {
