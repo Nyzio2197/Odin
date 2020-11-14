@@ -55,6 +55,8 @@ public class ModeratorListener extends ListenerAdapter {
                 } else {
                     server.editChannels(Server.TWITTER, mentionedChannels, message.getTextChannel());
                 }
+            } else {
+                event.getChannel().sendMessage("To add or remove channel to general, call **o.channel general #channel**.\nSimilarly call **o.channel twitter** and **o.channel announce** for twitter and announcement respectively.").queue();
             }
         } else if (command.startsWith("sec")) {
             if (command.contains("1")) {

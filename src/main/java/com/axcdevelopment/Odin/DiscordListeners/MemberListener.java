@@ -37,7 +37,7 @@ public class MemberListener extends ListenerAdapter {
             if (server.getSecurity().isMod(event.getMember())) {
                 embedBuilder.addField("o.toggles", "Change server toggles here. Twitter Feed, Maintenance Reminders, PvP reminders and the like.", false)
                         .addField("o.channel [general/announce/twitter]", "Edit which channels Odin will send messages to according to category. Call this command without a [general/announce/twitter] for extra help.", false)
-                        .addField("o.sec", "Change the perms needed to be registered as a moderator. Default is Administrator Permission.", false)
+                        .addField("o.sec", "Change the perms needed to be registered as a moderator. Default is Administrator Permission. 1 for Message Manage, 2 for Manage Channel, 3 for Administrator", false)
                         .addBlankField(false)
                         .addField("o.configs", "Get the server configurations for Odin", false);
             }
