@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class Listener {
 
-    public final static String PREFIX = "b.";
+    public final static String PREFIX = "o.";
 
     public static boolean isDirected(Message message) {
         String messageContent = message.getContentRaw();
