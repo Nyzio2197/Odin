@@ -57,7 +57,7 @@ public class TwitterStatusListener implements StatusListener {
             if (indexApprox != -1)
                 time = text.substring(indexApprox + 14, indexApprox + 16).trim();
             for (Server server : Discord.getServers()) {
-                server.sendMessage(Server.MAINTENANCE, "Kommandant, maintenance has been extended" + (time == null ? "." : " by " + time + "hours") + ".");
+                server.sendMessage(Server.MAINTENANCE, "Kommandant, maintenance has been extended" + (time == null ? "" : " by " + time + "hours") + ".");
             }
         }
     }
