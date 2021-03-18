@@ -16,9 +16,13 @@ public class InternalClock {
             @Override
             public void run() {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HHmmss");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+                TimeZone timeZone = TimeZone.getTimeZone("America/Los_Angeles");
+                dateFormat.setTimeZone(timeZone);
                 for (ClockListener clockListener : new ArrayList<>(listeners)) {
-                    if (clockListener.check(dateFormat.format(new Date(new Date().getTime() + dateFormat.getTimeZone().getDSTSavings())))) {
+                    int offset = 0;
+                    // if (timeZone.inDaylightTime(new Date()))
+                    //     offset = timeZone.getDSTSavings();
+                    if (clockListener.check(dateFormat.format(new Date(new Date().getTime() + offset)))) {
                         clockListener.doAction();
                     }
                 }
