@@ -1,7 +1,7 @@
-# OdinV4
+# Odin
 [Discord](https://discord.gg/SGtY8am)
 
-### This is the public OdinV4 build.
+### This is the public Odin build.
 It is currently still a work in progress and suggestions are welcome.
 This Discord bot is a reminder style bot for the EN players of Azur Lane. 
 
